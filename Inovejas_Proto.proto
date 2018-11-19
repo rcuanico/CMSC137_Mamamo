@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+package inovejas.protobuf;
+
+option java_package = "com.cmsc137.inovejas.protobuf";
+option java_outer_classname = "Inovejas_Proto";
+
+message Person {
+  required string name = 1;
+  required int32 age = 2;
+  
+}
