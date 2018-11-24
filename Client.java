@@ -12,13 +12,14 @@ public class Client{
 		return (sc.nextInt());
 	}
 
-	private static String createLobby(DataOutputStream out, InputStream inFromServer){
+	private static String createLobby (DataOutputStream out, InputStream inFromServer){
 		String lobbyId="";
 		try {
-			TcpPacket.CreateLobbyPacket.Builder createPacket = TcpPacket.CreateLobbyPacket.newBuilder();
-				createPacket.setType(TcpPacket.PacketType.CREATE_LOBBY)
-				.setMaxPlayers(8);
-			out.write(createPacket.build().toByteArray());
+			TcpPacket.CreateLobbyPacket createPacket = TcpPacket.CreateLobbyPacket.newBuilder()
+				.setType(TcpPacket.PacketType.CREATE_LOBBY)
+				.setMaxPlayers(8)
+				.build();
+			out.write(createPacket.toByteArray());
 
 			byte[] lobbyData = new byte[1024];	//getting server response
 			int count = inFromServer.read(lobbyData);
@@ -31,73 +32,57 @@ public class Client{
 		return (lobbyId);
 	}
 
-	private static Player.Builder createPlayer(String name){
-		Player.Builder player = Player.newBuilder();
-			player.setName(name)
+	private static Player createPlayer (String name){
+		Player player = Player.newBuilder()
+			.setName(name)
 			.build();
 		return player;
 	}
 
-	private static void joinLobby(Player.Builder player, String lobbyId, DataOutputStream out, InputStream inFromServer){
+	private static TcpPacket.ConnectPacket joinLobby (Player player, String lobbyId, DataOutputStream out, InputStream inFromServer){
+		TcpPacket.ConnectPacket connectPacket = null;
 		try {
-			TcpPacket.ConnectPacket.Builder connectPacket = TcpPacket.ConnectPacket.newBuilder();
-				connectPacket.setType(TcpPacket.PacketType.CONNECT)
-				.setPlayer(player)
-				.setLobbyId(lobbyId);
-			out.write(connectPacket.build().toByteArray());
-
-			byte[] lobbyData = new byte[1024];	//getting server response
-			int count = inFromServer.read(lobbyData);
-			lobbyData = Arrays.copyOf(lobbyData, count);
-			TcpPacket.ConnectPacket lobbyMsg = TcpPacket.ConnectPacket.parseFrom(lobbyData);
-			System.out.println(lobbyMsg);
-		}catch(IOException e) { // error cannot connect to server
-		  e.printStackTrace();
-		  System.out.println("Cannot find (or disconnected from) Server");
-		}
-	}
-
-	private static void chatLobby(Player.Builder player, DataOutputStream out, InputStream inFromServer, BufferedReader stdin){
-		try {
-			TcpPacket.DisconnectPacket.Builder disconnectPacket = null;
-			do{
-				System.out.print("Enter message: ");
-				String msg=stdin.readLine();
-
-				//send typed message to lobby
-				TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
-					chatPacket.setType(TcpPacket.PacketType.CHAT)
+				connectPacket = TcpPacket.ConnectPacket.newBuilder()
+					.setType(TcpPacket.PacketType.CONNECT)
 					.setPlayer(player)
-					.setMessage(msg);
-				out.write(chatPacket.build().toByteArray());
+					.setLobbyId(lobbyId)
+					.build();
+				out.write(connectPacket.toByteArray());
 
 				byte[] lobbyData = new byte[1024];	//getting server response
 				int count = inFromServer.read(lobbyData);
 				lobbyData = Arrays.copyOf(lobbyData, count);
-				TcpPacket.ChatPacket lobbyMsg = TcpPacket.ChatPacket.parseFrom(lobbyData);
-				System.out.println(lobbyMsg);
-
-				if(msg.equals("quit")){	//start disconnecting when 'quit' is typed
-					disconnectPacket = TcpPacket.DisconnectPacket.newBuilder();
-						disconnectPacket.setType(TcpPacket.PacketType.DISCONNECT)
-						.setPlayer(player);
-					out.write(disconnectPacket.build().toByteArray());
+				TcpPacket.ConnectPacket lobbyMsg = TcpPacket.ConnectPacket.parseFrom(lobbyData);
+				if(lobbyMsg.getType() == TcpPacket.PacketType.CONNECT){
+					System.out.println("You have successfully connected to the lobby.");
+				}else{
+					System.out.println("Connection to lobby failed.");
 				}
-			}while(disconnectPacket==null);
-
 		}catch(IOException e) { // error cannot connect to server
 		  e.printStackTrace();
 		  System.out.println("Cannot find (or disconnected from) Server");
 		}
+		return connectPacket;
+	}
+
+	private static void chatLobby(Player player, DataOutputStream out, InputStream inFromServer){
+		ChatSender sender = new ChatSender(player, out);
+		sender.start();
+		ChatReceiver receiver = new ChatReceiver(inFromServer);
+		receiver.start();
+
+		try{
+			receiver.join();
+			sender.join();
+		}catch(InterruptedException e){}
 	}
 
 	public static void main(String[] args) {
-		try {
+		try { 
 			//connecting to server
 			String serverName = args[0];
 			int port = Integer.parseInt(args[1]);
 			Socket server = new Socket(serverName, port);
-			server.setSoTimeout(10000);
 			System.out.println("Just connected to " + server.getRemoteSocketAddress());
 
 			OutputStream outToServer = server.getOutputStream();
@@ -110,30 +95,29 @@ public class Client{
 			//getting player information
 			stdout.print("Enter player name: ");
 			String name=stdin.readLine();
-			Player.Builder player = createPlayer(name);
+			Player player = createPlayer(name);
 			String lobbyId="";
 
 			int choice = mainMenu();
 			switch(choice){
 				case 1:
 					lobbyId=createLobby(out, inFromServer);
-					stdout.print(lobbyId);
+					stdout.print("New lobby created. Lobby ID: "+lobbyId+"\n");
 					joinLobby(player, lobbyId, out, inFromServer);
+					chatLobby(player, out, inFromServer);
 					break;
 				case 2:
 					stdout.print("Enter lobby Id: ");
 					lobbyId=stdin.readLine();
 					joinLobby(player, lobbyId, out, inFromServer);
-					chatLobby(player, out, inFromServer, stdin);
+					chatLobby(player, out, inFromServer);
 					break;
 			}
 			server.close();
 
-		}catch(SocketTimeoutException s){
-                System.out.println("Socket timed out!");
-        }catch(IOException e) { // error cannot connect to server
+		}catch(IOException e) { // error cannot connect to server
 		  e.printStackTrace();
 		  System.out.println("Cannot find (or disconnected from) Server");
 		}
-  }
+	}
 }
