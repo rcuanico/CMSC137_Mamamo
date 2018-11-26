@@ -1,6 +1,6 @@
 import java.awt.*;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class Layout {
     final static boolean shouldFill = true;
@@ -52,7 +52,7 @@ public class Layout {
 
 		button = new JButton("Canvas");
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.weightx = 0.8;
+		c.weightx = 0.79;
 		c.gridheight = 4;
 		c.gridx = 1;
 		c.gridy = 0;
@@ -61,11 +61,30 @@ public class Layout {
 
 		button = new JButton("Scores and Status");
 		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridwidth = 2;
+		c.gridwidth = 3;
 		c.gridx = 0;
 		c.gridy = 4;
 		c.ipady = 100;
 		pane.add(button, c);
+
+		JPanel pallettePanel = new JPanel();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		// pallettePanel.setBackground(Color.parseColor("#2c3e50"));
+		c.weightx = 0.01;
+		c.gridheight = 4;
+		c.gridx = 2;
+		c.gridy = 0;
+		c.ipady = 615;
+		pane.add(pallettePanel, c);
+
+		button = new JButton("EXIT");
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.01;
+		c.gridx = 2;
+		c.gridy = 4;
+		c.ipady = 100;
+		pane.add(button, c);
+
     }
 
     /**

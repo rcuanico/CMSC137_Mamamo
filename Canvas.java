@@ -8,6 +8,7 @@ public class Canvas extends JPanel {
 private Image image;
 Graphics2D twoD;
 private int old_x, old_y, current_x, current_y;
+Color color = Color.BLUE; 
 
 public Canvas() {
     this.init();
@@ -85,7 +86,24 @@ public void paintComponent(Graphics g) {
     }
 
     g.drawImage(image,0,0,null);
+    
 
+}
+
+public void changetoRed(){
+    twoD.setPaint(Color.red);
+}
+public void changetoBlue(){
+    twoD.setPaint(Color.blue);
+}
+public void changetoYellow(){
+    twoD.setPaint(Color.yellow);
+}
+public void changetoGreen(){
+    twoD.setPaint(Color.green);
+}
+public void changetoBlack(){
+    twoD.setPaint(Color.black);
 }
 
 }
