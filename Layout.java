@@ -11,7 +11,7 @@ import java.net.*;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Layout {
+public class Layout{
     final static boolean shouldFill = true;
     final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
@@ -24,6 +24,9 @@ public class Layout {
 	private static JTextArea chats;
 	private static JPanel msgArea;
 
+	private Runnable chatSender;
+	private Runnable chatReceiver;
+
     public Layout (Player player, String lobbyId, DataOutputStream out, InputStream inFromServer) {
         this.out=out;
         this.inFromServer=inFromServer;
@@ -34,6 +37,7 @@ public class Layout {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();
+                chatLobby();
             }
         });
     }
@@ -44,18 +48,26 @@ public class Layout {
 		mainpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		pane.add(mainpanel);
 
-		chats=new JTextArea("Hello");
-		chats.setPreferredSize(new Dimension(600,400));
+		chats=new JTextArea("");
+		chats.setPreferredSize(new Dimension(600,550));
 		chats.setEditable(false);
 		chats.setOpaque(false);
 		mainpanel.add(chats, BorderLayout.NORTH);
 
 		msgArea=new JPanel(new BorderLayout());
-		msgArea.setPreferredSize(new Dimension(600,400));
+		msgArea.setPreferredSize(new Dimension(600,50));
 		msgArea.setOpaque(false);
-		mainpanel.add(msgArea,BorderLayout.CENTER);
+		mainpanel.add(msgArea,BorderLayout.SOUTH);
 
-		chatLobby();
+		JTextArea msgHere = new JTextArea("");
+		chats.setOpaque(false);
+		msgHere.setPreferredSize(new Dimension(400,50));
+		msgArea.add(msgHere, BorderLayout.CENTER);
+
+		JButton sendMsg = new JButton("Send");
+		sendMsg.setPreferredSize(new Dimension(200,50));
+		msgArea.add(sendMsg, BorderLayout.EAST);
+
 
   //       if (RIGHT_TO_LEFT) {
   //           pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -185,14 +197,13 @@ public class Layout {
 	}
 
 	private static void chatLobby(){
-		ChatSender sender = new ChatSender(player, out);
+		ChatSender sender = new ChatSender(player, out, msgArea);
 		sender.start();
 		ChatReceiver receiver = new ChatReceiver(inFromServer, chats);
 		receiver.start();
-
-		try{
-			receiver.join();
-			sender.join();
-		}catch(InterruptedException e){}
+		// try{
+		// 	receiver.join();
+		// 	sender.join();
+		// }catch(InterruptedException e){}
 	}
 }

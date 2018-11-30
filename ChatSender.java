@@ -2,14 +2,17 @@ import proto.TcpPacketProtos.*;
 import proto.PlayerProtos.*;
 import java.io.*;
 import java.net.*;
+import javax.swing.*;
 
 public class ChatSender extends Thread{
 	private Player player;
 	private DataOutputStream out;
+	private String msg;
 
-	public ChatSender (Player player, DataOutputStream out){
+	public ChatSender (Player player, DataOutputStream out, String msg){
 		this.player=player;
 		this.out=out;
+		this.msg=msg;
 	}
 
 	public void run() {

@@ -35,6 +35,7 @@ public class ChatReceiver extends Thread{
 						chats.setText(chats.getText()+lobbyMsg.getPlayer().getName()+" has disconnected from the lobby."+"\n");
 						System.out.println(lobbyMsg.getPlayer().getName()+" has disconnected from the lobby.");
 					}
+					chats.update(chats.getGraphics());
 				}else{
 					listen=false;
 				}
