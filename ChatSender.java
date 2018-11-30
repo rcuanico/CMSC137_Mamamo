@@ -19,23 +19,22 @@ public class ChatSender extends Thread{
 		try{
 			BufferedReader stdin=new BufferedReader(new InputStreamReader(System.in));
 			TcpPacket.DisconnectPacket.Builder disconnectPacket = null;
-			//do{
-				System.out.println(msg);
-				
-				if(msg.equals("quit")){	//start disconnecting when 'quit' is typed
-					disconnectPacket = TcpPacket.DisconnectPacket.newBuilder();
-						disconnectPacket.setType(TcpPacket.PacketType.DISCONNECT)
-						.setPlayer(player);
-					out.write(disconnectPacket.build().toByteArray());
-				}else{
-					//send typed message to lobby
-					TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
-						chatPacket.setType(TcpPacket.PacketType.CHAT)
-						.setPlayer(player)
-						.setMessage(msg);
-					out.write(chatPacket.build().toByteArray());
-				}
-			//}while(disconnectPacket==null);
+
+			System.out.println(msg);
+			
+			if(msg.equals("quit")){	//start disconnecting when 'quit' is typed
+				disconnectPacket = TcpPacket.DisconnectPacket.newBuilder();
+					disconnectPacket.setType(TcpPacket.PacketType.DISCONNECT)
+					.setPlayer(player);
+				out.write(disconnectPacket.build().toByteArray());
+			}else{
+				//send typed message to lobby
+				TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
+					chatPacket.setType(TcpPacket.PacketType.CHAT)
+					.setPlayer(player)
+					.setMessage(msg);
+				out.write(chatPacket.build().toByteArray());
+			}
 
 		}catch(IOException e) { // error cannot connect to server
 		  e.printStackTrace();

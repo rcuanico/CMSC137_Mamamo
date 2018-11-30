@@ -45,21 +45,28 @@ public class Layout{
 
     public static void addComponentsToPane(JFrame frame) {
     	Container pane = frame.getContentPane();
-    	JPanel mainpanel = new JPanel(new BorderLayout());
-		mainpanel.setPreferredSize(new Dimension(600,600));
-		mainpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		pane.add(mainpanel);
+    	//=============USERNAME===============//
+    	System.out.println(player.getName());
+
+    	//=============ALL PLAYERS============//
+    	getAllPlayers();
+
+    	//============FOR ALL CHATS============//
+    	JPanel chatPanel = new JPanel(new BorderLayout());
+		chatPanel.setPreferredSize(new Dimension(600,600));
+		chatPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		pane.add(chatPanel);
 
 		chats=new JTextArea("");
 		chats.setPreferredSize(new Dimension(600,400));
 		chats.setEditable(false);
 		chats.setOpaque(false);
-		mainpanel.add(chats, BorderLayout.NORTH);
+		chatPanel.add(chats, BorderLayout.NORTH);
 
 		msgArea=new JPanel(new BorderLayout());
 		msgArea.setPreferredSize(new Dimension(600,50));
 		msgArea.setOpaque(false);
-		mainpanel.add(msgArea,BorderLayout.SOUTH);
+		chatPanel.add(msgArea,BorderLayout.SOUTH);
 
 		JTextArea msgHere = new JTextArea("");
 		chats.setOpaque(false);
@@ -90,6 +97,7 @@ public class Layout{
 				msgHere.setText("");
 			}
 		});
+		//================================//
 
   //       if (RIGHT_TO_LEFT) {
   //           pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -169,11 +177,6 @@ public class Layout{
 
     }
 
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
     private static void createAndShowGUI() {
         //Create and set up the window.
         JFrame frame = new JFrame("GridBagLayoutDemo");
@@ -183,7 +186,6 @@ public class Layout{
         frame.setPreferredSize(new Dimension(600, 600));
 
         //Set up the content pane.
-        //Chat chat = new Chat(frame, player, out, inFromServer);
         addComponentsToPane(frame);
 
         //Display the window.
@@ -221,5 +223,22 @@ public class Layout{
 	private static void chatLobby(){
 		ChatReceiver receiver = new ChatReceiver(inFromServer, chats);
 		receiver.start();
+	}
+
+	private static void getAllPlayers(){
+		try{
+			TcpPacket.PlayerListPacket.Builder listPacket = TcpPacket.PlayerListPacket.newBuilder();
+			listPacket.setType(TcpPacket.PacketType.PLAYER_LIST);
+			out.write(listPacket.build().toByteArray());
+
+			byte[] lobbyData = new byte[1024];	//getting server response
+			int count = inFromServer.read(lobbyData);
+			lobbyData = Arrays.copyOf(lobbyData, count);
+			TcpPacket.PlayerListPacket lobbyMsg = TcpPacket.PlayerListPacket.parseFrom(lobbyData);
+			System.out.println(lobbyMsg);
+		}catch(IOException e) { // error cannot connect to server
+		  e.printStackTrace();
+		  System.out.println("Cannot find (or disconnected from) Server");
+		}
 	}
 }
