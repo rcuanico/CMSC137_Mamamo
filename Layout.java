@@ -1,12 +1,40 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import javax.swing.JButton;
 import javax.swing.*;
+import proto.TcpPacketProtos.*;
+import proto.PlayerProtos.*;
+import java.io.*;
+import java.net.*;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class Layout {
     final static boolean shouldFill = true;
     final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
     final static Canvas canvas = new Canvas();
+
+    private static DataOutputStream out;
+	private static InputStream inFromServer;
+	private Player player;
+	private String lobbyId;
+
+    public Layout (Player player, String lobbyId, DataOutputStream out, InputStream inFromServer) {
+        this.out=out;
+        this.inFromServer=inFromServer;
+        this.player=player;
+        this.lobbyId=lobbyId;
+        joinLobby();
+
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
+    }
 
     public static void addComponentsToPane(Container pane) {
         if (RIGHT_TO_LEFT) {
@@ -107,13 +135,29 @@ public class Layout {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
+   private TcpPacket.ConnectPacket joinLobby (){
+		TcpPacket.ConnectPacket connectPacket = null;
+		try {
+				connectPacket = TcpPacket.ConnectPacket.newBuilder()
+					.setType(TcpPacket.PacketType.CONNECT)
+					.setPlayer(player)
+					.setLobbyId(lobbyId)
+					.build();
+				out.write(connectPacket.toByteArray());
+
+				byte[] lobbyData = new byte[1024];	//getting server response
+				int count = inFromServer.read(lobbyData);
+				lobbyData = Arrays.copyOf(lobbyData, count);
+				TcpPacket.ConnectPacket lobbyMsg = TcpPacket.ConnectPacket.parseFrom(lobbyData);
+				if(lobbyMsg.getType() == TcpPacket.PacketType.CONNECT){
+					System.out.println("You have successfully connected to the lobby.");
+				}else{
+					System.out.println("Connection to lobby failed.");
+				}
+		}catch(IOException e) { // error cannot connect to server
+		  e.printStackTrace();
+		  System.out.println("Cannot find (or disconnected from) Server");
+		}
+		return connectPacket;
+	}
 }

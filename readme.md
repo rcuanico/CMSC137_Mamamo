@@ -7,4 +7,4 @@
 6. Extract protobuf-java-3.6.1.jar using: $ jar -xvf protobuf-java-3.6.1.jar.
 -----Above steps are already done-----
 7. Compile Proj_Protobuf.java using: $ javac *.java
-8. Run Client using: $ java Client 202.92.144.45 80
+8. Run Client using: $ java Main 202.92.144.45 80
