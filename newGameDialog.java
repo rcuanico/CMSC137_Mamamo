@@ -120,6 +120,7 @@ public class newGameDialog extends JDialog {
 		startGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Layout layout = new Layout(player, lobbyId, out, inFromServer);
+				frame.dispose();
 			}
 		});
 

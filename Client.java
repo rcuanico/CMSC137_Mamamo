@@ -66,15 +66,15 @@ public class Client{
 	}
 
 	private static void chatLobby(Player player, DataOutputStream out, InputStream inFromServer){
-		ChatSender sender = new ChatSender(player, out);
-		sender.start();
-		ChatReceiver receiver = new ChatReceiver(inFromServer);
-		receiver.start();
+		// ChatSender sender = new ChatSender(player, out);
+		// sender.start();
+		// ChatReceiver receiver = new ChatReceiver(inFromServer);
+		// receiver.start();
 
-		try{
-			receiver.join();
-			sender.join();
-		}catch(InterruptedException e){}
+		// try{
+		// 	receiver.join();
+		// 	sender.join();
+		// }catch(InterruptedException e){}
 	}
 
 	public static void main(String[] args) {

@@ -63,7 +63,7 @@ public class Main {
 		newGame.setForeground(Color.BLACK);
 		//joinGame button
 		JButton joinGame = new JButton("Join Game");
-		options.add(newGame);
+		options.add(joinGame);
 		joinGame.setBorder(border);
 		joinGame.setFont(buttonFont);
 		joinGame.setBackground(new Color(200,143,76));
@@ -108,7 +108,6 @@ public class Main {
 
 		JButton back = new JButton("Back to Main Menu");
 		instrucPanel.add(back, BorderLayout.SOUTH);
-		//back.setBorder(BorderFactory.createMatteBorder(1, 100, 1, 100, new Color(85,107,47)));
 		back.setFont(buttonFont);
 		back.setBackground(new Color(200,143,76));
 
@@ -132,7 +131,7 @@ public class Main {
 
 		joinGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//joinGameDialog soln = new joinGameDialog(frame);
+				joinGameDialog soln = new joinGameDialog(frame, out, inFromServer);
 			}
 		});
 
