@@ -49,7 +49,7 @@ public class Layout{
 		pane.add(mainpanel);
 
 		chats=new JTextArea("");
-		chats.setPreferredSize(new Dimension(600,550));
+		chats.setPreferredSize(new Dimension(600,400));
 		chats.setEditable(false);
 		chats.setOpaque(false);
 		mainpanel.add(chats, BorderLayout.NORTH);
@@ -67,6 +67,21 @@ public class Layout{
 		JButton sendMsg = new JButton("Send");
 		sendMsg.setPreferredSize(new Dimension(200,50));
 		msgArea.add(sendMsg, BorderLayout.EAST);
+
+		sendMsg.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ChatSender sender = new ChatSender(player, out, msgHere.getText());
+				sender.start();
+				try{
+					sender.join();
+				}catch(InterruptedException err){}
+				if(msgHere.getText().equals("quit")){
+					sendMsg.setEnabled(false);
+					msgHere.setEditable(false);
+				}
+				msgHere.setText("");
+			}
+		});
 
 
   //       if (RIGHT_TO_LEFT) {
@@ -197,8 +212,6 @@ public class Layout{
 	}
 
 	private static void chatLobby(){
-		ChatSender sender = new ChatSender(player, out, msgArea);
-		sender.start();
 		ChatReceiver receiver = new ChatReceiver(inFromServer, chats);
 		receiver.start();
 		// try{

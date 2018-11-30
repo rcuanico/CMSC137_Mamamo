@@ -19,9 +19,9 @@ public class ChatSender extends Thread{
 		try{
 			BufferedReader stdin=new BufferedReader(new InputStreamReader(System.in));
 			TcpPacket.DisconnectPacket.Builder disconnectPacket = null;
-			do{
-				String msg=stdin.readLine();
-
+			//do{
+				System.out.println(msg);
+				
 				if(msg.equals("quit")){	//start disconnecting when 'quit' is typed
 					disconnectPacket = TcpPacket.DisconnectPacket.newBuilder();
 						disconnectPacket.setType(TcpPacket.PacketType.DISCONNECT)
@@ -35,7 +35,7 @@ public class ChatSender extends Thread{
 						.setMessage(msg);
 					out.write(chatPacket.build().toByteArray());
 				}
-			}while(disconnectPacket==null);
+			//}while(disconnectPacket==null);
 
 		}catch(IOException e) { // error cannot connect to server
 		  e.printStackTrace();
