@@ -32,6 +32,7 @@ public class Layout{
         this.inFromServer=inFromServer;
         this.player=player;
         this.lobbyId=lobbyId;
+
         joinLobby();
 
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -42,7 +43,8 @@ public class Layout{
         });
     }
 
-    public static void addComponentsToPane(Container pane) {
+    public static void addComponentsToPane(JFrame frame) {
+    	Container pane = frame.getContentPane();
     	JPanel mainpanel = new JPanel(new BorderLayout());
 		mainpanel.setPreferredSize(new Dimension(600,600));
 		mainpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -76,13 +78,18 @@ public class Layout{
 					sender.join();
 				}catch(InterruptedException err){}
 				if(msgHere.getText().equals("quit")){
-					sendMsg.setEnabled(false);
-					msgHere.setEditable(false);
+					frame.dispose();
+					try{
+						Runtime rt = Runtime.getRuntime();
+						Process pr = rt.exec("java Main 202.92.144.45 80");
+					}catch(IOException error) { // error cannot connect to server
+					  error.printStackTrace();
+					  System.out.println("Cannot open Main.java");
+					}
 				}
 				msgHere.setText("");
 			}
 		});
-
 
   //       if (RIGHT_TO_LEFT) {
   //           pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
@@ -177,7 +184,7 @@ public class Layout{
 
         //Set up the content pane.
         //Chat chat = new Chat(frame, player, out, inFromServer);
-        addComponentsToPane(frame.getContentPane());
+        addComponentsToPane(frame);
 
         //Display the window.
         frame.pack();
@@ -214,9 +221,5 @@ public class Layout{
 	private static void chatLobby(){
 		ChatReceiver receiver = new ChatReceiver(inFromServer, chats);
 		receiver.start();
-		// try{
-		// 	receiver.join();
-		// 	sender.join();
-		// }catch(InterruptedException e){}
 	}
 }
