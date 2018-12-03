@@ -45,36 +45,57 @@ public class Layout{
 
     public static void addComponentsToPane(JFrame frame) {
     	Container pane = frame.getContentPane();
+
+    	JPanel mainPanel = new JPanel(new BorderLayout());
+    	mainPanel.setPreferredSize(new Dimension(600,600));
+    	pane.add(mainPanel);
+
+    	JPanel topPanel = new JPanel(new BorderLayout());
+    	topPanel.setPreferredSize(new Dimension(600,450));
+    	mainPanel.add(topPanel, BorderLayout.NORTH);
+
+    	JPanel leftPanel = new JPanel(new BorderLayout());
+    	leftPanel.setPreferredSize(new Dimension(200,450));
+    	topPanel.add(leftPanel, BorderLayout.WEST);
+
     	//=============USERNAME===============//
-    	System.out.println(player.getName());
+    	JTextArea name = new JTextArea(player.getName());
+    	name.setPreferredSize(new Dimension(200,25));
+    	name.setEditable(false);
+    	name.setOpaque(true);
+    	leftPanel.add(name, BorderLayout.NORTH);
 
-    	//=============ALL PLAYERS============//
-    	getAllPlayers();
+    	//===============SCORE================//
+    	JTextArea score = new JTextArea("Score: ");
+    	score.setPreferredSize(new Dimension(200,25));
+    	score.setEditable(false);
+    	score.setOpaque(true);
+    	leftPanel.add(score, BorderLayout.CENTER);
 
-    	//============FOR ALL CHATS============//
+  //   	//============FOR ALL CHATS============//
     	JPanel chatPanel = new JPanel(new BorderLayout());
-		chatPanel.setPreferredSize(new Dimension(600,600));
+		chatPanel.setPreferredSize(new Dimension(200,400));
 		chatPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		pane.add(chatPanel);
+		leftPanel.add(chatPanel, BorderLayout.SOUTH);
 
 		chats=new JTextArea("");
-		chats.setPreferredSize(new Dimension(600,400));
+		chats.setPreferredSize(new Dimension(200,300));
 		chats.setEditable(false);
 		chats.setOpaque(false);
 		chatPanel.add(chats, BorderLayout.NORTH);
 
 		msgArea=new JPanel(new BorderLayout());
-		msgArea.setPreferredSize(new Dimension(600,50));
+		msgArea.setPreferredSize(new Dimension(200,50));
 		msgArea.setOpaque(false);
 		chatPanel.add(msgArea,BorderLayout.SOUTH);
 
 		JTextArea msgHere = new JTextArea("");
 		chats.setOpaque(false);
-		msgHere.setPreferredSize(new Dimension(400,50));
+		msgHere.setPreferredSize(new Dimension(150,50));
 		msgArea.add(msgHere, BorderLayout.CENTER);
 
 		JButton sendMsg = new JButton("Send");
-		sendMsg.setPreferredSize(new Dimension(200,50));
+		sendMsg.setPreferredSize(new Dimension(50,50));
 		msgArea.add(sendMsg, BorderLayout.EAST);
 
 		sendMsg.addActionListener(new ActionListener() {
@@ -97,84 +118,21 @@ public class Layout{
 				msgHere.setText("");
 			}
 		});
-		//================================//
 
-  //       if (RIGHT_TO_LEFT) {
-  //           pane.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-  //       }
+		//=============AREA TO DRAW==============//
+		JPanel drawPanel = new JPanel(new BorderLayout());
+    	drawPanel.setPreferredSize(new Dimension(400,450));
+    	topPanel.add(drawPanel, BorderLayout.CENTER);
+    	drawPanel.setBackground(new Color(85,107,47));
 
-  //       JButton button;
-		// pane.setLayout(new GridBagLayout());
-		// GridBagConstraints c = new GridBagConstraints();
-		// if (shouldFill) {
-		// //natural height, maximum width
-		// c.fill = GridBagConstraints.HORIZONTAL;
-		// }
+    	//======ALL PLAYER SCORES AND EXIT==========//
+    	JPanel bottomPanel = new JPanel(new BorderLayout());
+    	bottomPanel.setPreferredSize(new Dimension(600,150));
+    	mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-		// button = new JButton("Username");
-		// c.fill = GridBagConstraints.HORIZONTAL;
-		// c.gridx = 0;
-		// c.gridy = 0;
-		// c.ipady = 20;
-		// pane.add(button, c);
-
-		// button = new JButton("Score");
-		// c.fill = GridBagConstraints.HORIZONTAL;
-		// c.gridx = 0;
-		// c.gridy = 1;
-		// c.ipady = 60;
-		// pane.add(button, c);
-
-		// button = new JButton("Chats");
-		// c.fill = GridBagConstraints.HORIZONTAL;
-		// c.gridx = 0;
-		// c.gridy = 2;
-		// c.ipady = 450;
-		// pane.add(button, c);
-
-		// button = new JButton("Message:");
-		// c.fill = GridBagConstraints.HORIZONTAL;
-		// c.weightx = 0.2;
-		// c.gridx = 0;
-		// c.gridy = 3;
-		// c.ipady = 10;
-		// pane.add(button, c);
-
-		// button = new JButton("Canvas");
-		// c.fill = GridBagConstraints.HORIZONTAL;
-		// c.weightx = 0.79;
-		// c.gridheight = 4;
-		// c.gridx = 1;
-		// c.gridy = 0;
-		// c.ipady = 615;
-		// pane.add(canvas, c);
-
-		// button = new JButton("Scores and Status");
-		// c.fill = GridBagConstraints.HORIZONTAL;
-		// c.gridwidth = 3;
-		// c.gridx = 0;
-		// c.gridy = 4;
-		// c.ipady = 100;
-		// pane.add(button, c);
-
-		// JPanel pallettePanel = new JPanel();
-		// c.fill = GridBagConstraints.HORIZONTAL;
-		// // pallettePanel.setBackground(Color.parseColor("#2c3e50"));
-		// c.weightx = 0.01;
-		// c.gridheight = 4;
-		// c.gridx = 2;
-		// c.gridy = 0;
-		// c.ipady = 615;
-		// pane.add(pallettePanel, c);
-
-		// button = new JButton("EXIT");
-		// c.fill = GridBagConstraints.HORIZONTAL;
-		// c.weightx = 0.01;
-		// c.gridx = 2;
-		// c.gridy = 4;
-		// c.ipady = 100;
-		// pane.add(button, c);
-
+    	//=============ALL PLAYERS============//
+    	System.out.println(getAllPlayers().length());
+    	//getAllPlayers();
     }
 
     private static void createAndShowGUI() {
@@ -192,6 +150,7 @@ public class Layout{
         frame.pack();
         frame.setFocusable(true);
         frame.setVisible(true);
+        frame.setResizable(false);
     }
 
    	private TcpPacket.ConnectPacket joinLobby (){
