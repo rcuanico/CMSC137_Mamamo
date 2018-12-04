@@ -15,7 +15,7 @@ public class Layout{
     final static boolean shouldFill = true;
     final static boolean shouldWeightX = true;
     final static boolean RIGHT_TO_LEFT = false;
-    final static Canvas canvas = new Canvas();
+    static Canvas canvas = new Canvas();
 
     private static DataOutputStream out;
 	private static InputStream inFromServer;
@@ -57,6 +57,10 @@ public class Layout{
     	JPanel leftPanel = new JPanel(new BorderLayout());
     	leftPanel.setPreferredSize(new Dimension(200,450));
     	topPanel.add(leftPanel, BorderLayout.WEST);
+
+    	JPanel rightPanel = new JPanel(new BorderLayout());
+    	rightPanel.setPreferredSize(new Dimension(200,450));
+    	topPanel.add(rightPanel, BorderLayout.EAST);
 
     	//=============USERNAME===============//
     	JTextArea name = new JTextArea(player.getName());
@@ -121,9 +125,86 @@ public class Layout{
 
 		//=============AREA TO DRAW==============//
 		JPanel drawPanel = new JPanel(new BorderLayout());
-    	drawPanel.setPreferredSize(new Dimension(400,450));
-    	topPanel.add(drawPanel, BorderLayout.CENTER);
+    	canvas.setPreferredSize(new Dimension(400,450));
+    	topPanel.add(canvas);
+    	JPanel pallettePanel = new JPanel();
+    	pallettePanel.setPreferredSize(new Dimension(100,450));
+		pallettePanel.setLayout(null);
+		pallettePanel.setBackground(Color.decode("#95a5a6"));
+		JButton clearBtn = new JButton("Clear");
+		JButton blackBtn = new JButton("black");
+		JButton redBtn = new JButton("red");
+		JButton blueBtn = new JButton("blue");
+		JButton yellowBtn = new JButton("yellow");
+		JButton greenBtn = new JButton("green");
+		clearBtn.setBounds(0,10,0,0);
+		clearBtn.setSize(new Dimension(70,50));
+		clearBtn.setBackground(Color.decode("#7f8c8d"));
+		blackBtn.setBounds(0,80,0,0);
+		blackBtn.setSize(new Dimension(70,50));
+		blackBtn.setBackground(Color.black);
+		redBtn.setBounds(0,140,0,0);
+		redBtn.setSize(new Dimension(70,50));
+		redBtn.setBackground(Color.red);
+		blueBtn.setBounds(0,210,0,0);
+		blueBtn.setSize(new Dimension(70,50));
+		blueBtn.setBackground(Color.blue);
+		yellowBtn.setBounds(0,280,0,0);
+		yellowBtn.setSize(new Dimension(70,50));
+		yellowBtn.setBackground(Color.yellow);
+		greenBtn.setBounds(0,350,0,0);
+		greenBtn.setSize(new Dimension(70,50));
+		greenBtn.setBackground(Color.green);
+		pallettePanel.add(clearBtn);
+		pallettePanel.add(blackBtn);
+		pallettePanel.add(redBtn);
+		pallettePanel.add(blueBtn);
+		pallettePanel.add(yellowBtn);
+		pallettePanel.add(greenBtn);
+		rightPanel.add(pallettePanel);
+		// canvas.clearCanvas();
     	drawPanel.setBackground(new Color(85,107,47));
+
+
+    	//======Button Listeners======//
+    	 //button listeners
+        clearBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	canvas.clearCanvas();
+
+            }
+        });
+        blackBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	canvas.changetoBlack();
+            }
+        });
+        redBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	canvas.changetoRed();
+            }
+        });
+        blueBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	canvas.changetoBlue();
+            }
+        });
+        yellowBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	canvas.changetoYellow();
+            }
+        });
+        greenBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	canvas.changetoGreen();
+            }
+        });
 
     	//======ALL PLAYER SCORES AND EXIT==========//
     	JPanel bottomPanel = new JPanel(new BorderLayout());
@@ -131,7 +212,7 @@ public class Layout{
     	mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
     	//=============ALL PLAYERS============//
-    	System.out.println(getAllPlayers().length());
+    	// System.out.println(getAllPlayers().length());
     	//getAllPlayers();
     }
 
