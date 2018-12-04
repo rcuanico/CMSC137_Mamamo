@@ -23,12 +23,15 @@ public class Layout{
     private static DataOutputStream out;
 	private static InputStream inFromServer;
 	private static Player player;
+	private static int totalScore=0;
+	private static boolean canGuess=false;
 	private String lobbyId;
 	private static JTextArea chats;
 	private static JPanel msgArea;
 
 	private static Countdown cd;
 	private static String word="";
+	private static JTextArea timeRemaining;
 
 	private Runnable chatSender;
 	private Runnable chatReceiver;
@@ -54,59 +57,69 @@ public class Layout{
     	Container pane = frame.getContentPane();
 
     	JPanel mainPanel = new JPanel(new BorderLayout());
-    	mainPanel.setPreferredSize(new Dimension(600,600));
+    	mainPanel.setPreferredSize(new Dimension(1200,600));
     	pane.add(mainPanel);
 
     	JPanel topPanel = new JPanel(new BorderLayout());
-    	topPanel.setPreferredSize(new Dimension(600,450));
+    	topPanel.setPreferredSize(new Dimension(1200,450));
     	mainPanel.add(topPanel, BorderLayout.NORTH);
 
     	JPanel leftPanel = new JPanel(new BorderLayout());
-    	leftPanel.setPreferredSize(new Dimension(200,450));
+    	leftPanel.setPreferredSize(new Dimension(300,450));
     	topPanel.add(leftPanel, BorderLayout.WEST);
 
     	JPanel rightPanel = new JPanel(new BorderLayout());
-    	rightPanel.setPreferredSize(new Dimension(200,450));
+    	rightPanel.setPreferredSize(new Dimension(300,450));
     	topPanel.add(rightPanel, BorderLayout.EAST);
 
     	//=============USERNAME===============//
     	JTextArea name = new JTextArea(player.getName());
-    	name.setPreferredSize(new Dimension(200,25));
+    	name.setPreferredSize(new Dimension(300,25));
     	name.setEditable(false);
     	name.setOpaque(true);
     	leftPanel.add(name, BorderLayout.NORTH);
 
     	//===============SCORE================//
+    	JPanel scoreAndTime = new JPanel(new BorderLayout());
+    	scoreAndTime.setPreferredSize(new Dimension(300,50));
+    	leftPanel.add(scoreAndTime, BorderLayout.CENTER);
+
     	JTextArea score = new JTextArea("Score: ");
     	score.setPreferredSize(new Dimension(200,25));
     	score.setEditable(false);
     	score.setOpaque(true);
-    	leftPanel.add(score, BorderLayout.CENTER);
+    	scoreAndTime.add(score, BorderLayout.NORTH);
+
+    	timeRemaining = new JTextArea("Time Remaining: ");
+    	timeRemaining.setPreferredSize(new Dimension(200,25));
+    	timeRemaining.setEditable(false);
+    	timeRemaining.setOpaque(true);
+    	scoreAndTime.add(timeRemaining, BorderLayout.CENTER);
 
      	//============FOR ALL CHATS============//
     	JPanel chatPanel = new JPanel(new BorderLayout());
-		chatPanel.setPreferredSize(new Dimension(200,400));
+		chatPanel.setPreferredSize(new Dimension(300,350));
 		chatPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		leftPanel.add(chatPanel, BorderLayout.SOUTH);
 
 		chats=new JTextArea("");
-		chats.setPreferredSize(new Dimension(200,300));
+		chats.setPreferredSize(new Dimension(300,300));
 		chats.setEditable(false);
 		chats.setOpaque(false);
 		chatPanel.add(chats, BorderLayout.NORTH);
 
 		msgArea=new JPanel(new BorderLayout());
-		msgArea.setPreferredSize(new Dimension(200,50));
+		msgArea.setPreferredSize(new Dimension(300,50));
 		msgArea.setOpaque(false);
 		chatPanel.add(msgArea,BorderLayout.SOUTH);
 
 		JTextArea msgHere = new JTextArea("");
 		chats.setOpaque(false);
-		msgHere.setPreferredSize(new Dimension(150,50));
+		msgHere.setPreferredSize(new Dimension(200,50));
 		msgArea.add(msgHere, BorderLayout.CENTER);
 
 		JButton sendMsg = new JButton("Send");
-		sendMsg.setPreferredSize(new Dimension(50,50));
+		sendMsg.setPreferredSize(new Dimension(100,50));
 		msgArea.add(sendMsg, BorderLayout.EAST);
 
 		sendMsg.addActionListener(new ActionListener() {
@@ -125,19 +138,23 @@ public class Layout{
 					  error.printStackTrace();
 					  System.out.println("Cannot open Main.java");
 					}
-				}else if(msgHere.getText().equals(word)&&!word.equals("")){
+				}else if(msgHere.getText().equals(word)&&!word.equals("")&&canGuess==true){
+					chats.setText(chats.getText()+player.getName()+" guessed the word! +" +cd.getSecs()+" points."+"\n");
 					System.out.println(player.getName()+" guessed the word! +" +cd.getSecs()+" points.");
+					totalScore+=cd.getSecs();
+					canGuess=false;
+					score.setText("Score: "+Integer.toString(totalScore));
+					//score.update(score.getGraphics());
 				}
 				msgHere.setText("");
 			}
 		});
 
 		//=============AREA TO DRAW==============//
-		JPanel drawPanel = new JPanel(new BorderLayout());
-    	canvas.setPreferredSize(new Dimension(400,450));
-    	topPanel.add(canvas);
+    	canvas.setPreferredSize(new Dimension(600,450));
+    	topPanel.add(canvas, BorderLayout.CENTER);
     	JPanel pallettePanel = new JPanel();
-    	pallettePanel.setPreferredSize(new Dimension(100,450));
+    	pallettePanel.setPreferredSize(new Dimension(200,450));
 		pallettePanel.setLayout(null);
 		pallettePanel.setBackground(Color.decode("#95a5a6"));
 		JButton clearBtn = new JButton("Clear");
@@ -172,7 +189,6 @@ public class Layout{
 		pallettePanel.add(greenBtn);
 		rightPanel.add(pallettePanel);
 		// canvas.clearCanvas();
-    	drawPanel.setBackground(new Color(85,107,47));
 
 
     	//======Button Listeners======//
@@ -217,7 +233,7 @@ public class Layout{
 
     	//======ALL PLAYER SCORES AND EXIT==========//
     	JPanel bottomPanel = new JPanel(new BorderLayout());
-    	bottomPanel.setPreferredSize(new Dimension(600,150));
+    	bottomPanel.setPreferredSize(new Dimension(1000,150));
     	mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
     	//=============ALL PLAYERS============//
@@ -231,7 +247,7 @@ public class Layout{
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//frame.setPreferredSize(new Dimension(1200, 800));
-        frame.setPreferredSize(new Dimension(600, 600));
+        frame.setPreferredSize(new Dimension(1200, 600));
 
         //Set up the content pane.
         addComponentsToPane(frame);
@@ -249,10 +265,12 @@ public class Layout{
     		Random rand=new Random();
     		//getting the word to draw
     		try{
+    			timeRemaining.setText("Time Remaining: 60 secs.");
+    			canGuess=true;
 	    		int randomNum = rand.nextInt(106);
 	    		word = Files.readAllLines(Paths.get("wordpool.txt")).get(randomNum);
 	    		System.out.println("The word to guess is: "+word);
-	    		cd = new Countdown();
+	    		cd = new Countdown(timeRemaining);
     		}catch(IOException e) { // error cannot connect to server
 			  e.printStackTrace();
 			  System.out.println("Cannot read file");
