@@ -2,10 +2,11 @@ import proto.TcpPacketProtos.*;
 import java.io.*;
 import java.net.*;
 import java.util.Arrays;
-import javax.swing.JTextArea;
+import java.awt.*;
+import javax.swing.*;
 
 public class ChatReceiver extends Thread{
-	private InputStream inFromServer;
+	private static InputStream inFromServer;
 	private Boolean listen=true;
 	private JTextArea chats;
 

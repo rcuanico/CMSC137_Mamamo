@@ -10,6 +10,9 @@ import java.io.*;
 import java.net.*;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.Random;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Layout{
     final static boolean shouldFill = true;
@@ -23,6 +26,9 @@ public class Layout{
 	private String lobbyId;
 	private static JTextArea chats;
 	private static JPanel msgArea;
+
+	private static Countdown cd;
+	private static String word="";
 
 	private Runnable chatSender;
 	private Runnable chatReceiver;
@@ -39,6 +45,7 @@ public class Layout{
             public void run() {
                 createAndShowGUI();
                 chatLobby();
+                startGame();
             }
         });
     }
@@ -76,7 +83,7 @@ public class Layout{
     	score.setOpaque(true);
     	leftPanel.add(score, BorderLayout.CENTER);
 
-  //   	//============FOR ALL CHATS============//
+     	//============FOR ALL CHATS============//
     	JPanel chatPanel = new JPanel(new BorderLayout());
 		chatPanel.setPreferredSize(new Dimension(200,400));
 		chatPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -118,6 +125,8 @@ public class Layout{
 					  error.printStackTrace();
 					  System.out.println("Cannot open Main.java");
 					}
+				}else if(msgHere.getText().equals(word)&&!word.equals("")){
+					System.out.println(player.getName()+" guessed the word! +" +cd.getSecs()+" points.");
 				}
 				msgHere.setText("");
 			}
@@ -232,6 +241,23 @@ public class Layout{
         frame.setFocusable(true);
         frame.setVisible(true);
         frame.setResizable(false);
+    }
+
+    private static void startGame(){
+    	//int numRounds=10; //temporary; must be dynamic
+    	//for(int i=0; i<numRounds; i++){
+    		Random rand=new Random();
+    		//getting the word to draw
+    		try{
+	    		int randomNum = rand.nextInt(106);
+	    		word = Files.readAllLines(Paths.get("wordpool.txt")).get(randomNum);
+	    		System.out.println("The word to guess is: "+word);
+	    		cd = new Countdown();
+    		}catch(IOException e) { // error cannot connect to server
+			  e.printStackTrace();
+			  System.out.println("Cannot read file");
+			}
+    	//}
     }
 
    	private TcpPacket.ConnectPacket joinLobby (){
