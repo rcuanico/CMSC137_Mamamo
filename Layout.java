@@ -28,6 +28,7 @@ public class Layout{
 	private String lobbyId;
 	private static JTextArea chats;
 	private static JPanel msgArea;
+	private static JTextArea wordArea;
 
 	private static Countdown cd;
 	private static String word="";
@@ -90,11 +91,17 @@ public class Layout{
     	score.setOpaque(true);
     	scoreAndTime.add(score, BorderLayout.NORTH);
 
+    	wordArea = new JTextArea("Word:");
+    	score.setPreferredSize(new Dimension(200,25));
+    	score.setEditable(false);
+    	score.setOpaque(true);
+    	scoreAndTime.add(wordArea, BorderLayout.CENTER);
+
     	timeRemaining = new JTextArea("Time Remaining: ");
     	timeRemaining.setPreferredSize(new Dimension(200,25));
     	timeRemaining.setEditable(false);
     	timeRemaining.setOpaque(true);
-    	scoreAndTime.add(timeRemaining, BorderLayout.CENTER);
+    	scoreAndTime.add(timeRemaining, BorderLayout.SOUTH);
 
      	//============FOR ALL CHATS============//
     	JPanel chatPanel = new JPanel(new BorderLayout());
@@ -270,6 +277,7 @@ public class Layout{
 	    		int randomNum = rand.nextInt(106);
 	    		word = Files.readAllLines(Paths.get("wordpool.txt")).get(randomNum);
 	    		System.out.println("The word to guess is: "+word);
+	    		wordArea.setText("Word: "+word);
 	    		cd = new Countdown(timeRemaining);
     		}catch(IOException e) { // error cannot connect to server
 			  e.printStackTrace();
