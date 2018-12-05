@@ -69,7 +69,7 @@ public class Layout{
     	topPanel.add(leftPanel, BorderLayout.WEST);
 
     	JPanel rightPanel = new JPanel(new BorderLayout());
-    	rightPanel.setPreferredSize(new Dimension(300,450));
+    	rightPanel.setPreferredSize(new Dimension(70,450));
     	topPanel.add(rightPanel, BorderLayout.EAST);
 
     	//=============USERNAME===============//
@@ -154,7 +154,7 @@ public class Layout{
     	canvas.setPreferredSize(new Dimension(600,450));
     	topPanel.add(canvas, BorderLayout.CENTER);
     	JPanel pallettePanel = new JPanel();
-    	pallettePanel.setPreferredSize(new Dimension(200,450));
+    	pallettePanel.setPreferredSize(new Dimension(200,200));
 		pallettePanel.setLayout(null);
 		pallettePanel.setBackground(Color.decode("#95a5a6"));
 		JButton clearBtn = new JButton("Clear");

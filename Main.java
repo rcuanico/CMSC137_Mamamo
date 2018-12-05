@@ -91,13 +91,13 @@ public class Main {
 		instrucPanel.setOpaque(false);
 
 		JTextArea howToPlay= new JTextArea("HOW TO PLAY\n");
-		howToPlay.setFont(new Font("Arial", Font.BOLD, 18));
+		howToPlay.setFont(new Font("Arial", Font.BOLD, 17));
 		howToPlay.setEditable(false);
 		howToPlay.setOpaque(false);
 		howToPlay.setForeground(new Color(200,143,76));
 		instrucPanel.add(howToPlay, BorderLayout.NORTH);
 
-		JTextArea instrucText=new JTextArea("Sudoku is a logic-based,combinatorial, number-placement puzzle, where the objective is to fill out an n × n grid with digits such that each row, column, and subgrid contain all the digits from 1 to n . Commonly, n is a perfect square so that √n resolves to a whole number.\n\nSudoku X is a twist on the original Sudoku puzzle that requires the main diagonals, in addition to the rows, columns, and subgrids, to also have all the numbers from 1 to n.\n\nSudoku Y is another twist on the original Sudoku puzzle that requires the upper halves of the main diagonals and the lower half of the center column to also have all the numbers from 1 to n.\n\nSudoku XY requires a solution to fulfill both the Sudoku X and Sudoku Y conditions.");
+		JTextArea instrucText=new JTextArea("There will be two player types: the guessers and the artist. \n The artist will draw on the space provided the word that will be given to them. \n The guesser must guess the word being drawn as quick as possible. \n\n Instructions:\nThe host player will select the number of rounds to be played. The minimum number of rounds is 3.\nA new artist will be selected per round. This is to be done randomly.\nThe selected artist will be assigned a word that they will draw while the guessers try and guess using the chat box. Each round lasts one minute.\n\nScoring:\nThe points a guesser will receive will depend on how fast they were able to guess the word. The score will start from 60, and as the timer starts, one point will be deducted per second.\nThe points an artist will receive depends on how many players were able to guess the word. The artist will receive 60% of the points that each guesser received.\n\nEndgame:\nOnce the specified number of rounds have been reached, the scores will be totaled and the player with the most points wins.");
 		instrucText.setLineWrap(true);
 		instrucText.setWrapStyleWord(true);
 		instrucText.setEditable(false);
