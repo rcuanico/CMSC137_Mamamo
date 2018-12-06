@@ -18,7 +18,7 @@ public class Main {
 		JPanel mainpanel = new JPanel(new BorderLayout());
 		mainpanel.setPreferredSize(new Dimension(600,600));
 		mainpanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		mainpanel.setBackground(new Color(85,107,47));
+		mainpanel.setBackground(Color.decode("#3498db"));
 
 		//empty panel
 		JPanel northPanel = new JPanel();
@@ -51,7 +51,7 @@ public class Main {
 		cardPanel.add(options, "Options");
 		options.setOpaque(false);
 
-		Border border=BorderFactory.createMatteBorder(10, 100, 20, 100, new Color(85,107,47));
+		Border border=BorderFactory.createMatteBorder(10, 100, 20, 100, Color.decode("#3498db"));
 		Font buttonFont=new Font("Arial", Font.PLAIN, 20);
 
 		//newGame button
@@ -59,28 +59,28 @@ public class Main {
 		options.add(newGame);
 		newGame.setBorder(border);
 		newGame.setFont(buttonFont);
-		newGame.setBackground(new Color(200,143,76));
+		newGame.setBackground(Color.decode("#f1c40f"));
 		newGame.setForeground(Color.BLACK);
 		//joinGame button
 		JButton joinGame = new JButton("Join Game");
 		options.add(joinGame);
 		joinGame.setBorder(border);
 		joinGame.setFont(buttonFont);
-		joinGame.setBackground(new Color(200,143,76));
+		joinGame.setBackground(Color.decode("#f1c40f"));
 		joinGame.setForeground(Color.BLACK);
 		//see instructions
 		JButton instrucs = new JButton("Instructions");
 		options.add(instrucs);
 		instrucs.setBorder(border);
 		instrucs.setFont(buttonFont);
-		instrucs.setBackground(new Color(200,143,76));
+		instrucs.setBackground(Color.decode("#f1c40f"));
 		instrucs.setForeground(Color.BLACK);
 		//exitGame button
 		JButton exitGame = new JButton("Exit Game");
 		options.add(exitGame);
 		exitGame.setBorder(border);
 		exitGame.setFont(buttonFont);
-		exitGame.setBackground(new Color(200,143,76));
+		exitGame.setBackground(Color.decode("#f1c40f"));
 		exitGame.setForeground(Color.BLACK);
 		// ===================================================== //
 
@@ -94,7 +94,7 @@ public class Main {
 		howToPlay.setFont(new Font("Arial", Font.BOLD, 17));
 		howToPlay.setEditable(false);
 		howToPlay.setOpaque(false);
-		howToPlay.setForeground(new Color(200,143,76));
+		howToPlay.setForeground(Color.decode("#3498db"));
 		instrucPanel.add(howToPlay, BorderLayout.NORTH);
 
 		JTextArea instrucText=new JTextArea("There will be two player types: the guessers and the artist. \n The artist will draw on the space provided the word that will be given to them. \n The guesser must guess the word being drawn as quick as possible. \n\n Instructions:\nThe host player will select the number of rounds to be played. The minimum number of rounds is 3.\nA new artist will be selected per round. This is to be done randomly.\nThe selected artist will be assigned a word that they will draw while the guessers try and guess using the chat box. Each round lasts one minute.\n\nScoring:\nThe points a guesser will receive will depend on how fast they were able to guess the word. The score will start from 60, and as the timer starts, one point will be deducted per second.\nThe points an artist will receive depends on how many players were able to guess the word. The artist will receive 60% of the points that each guesser received.\n\nEndgame:\nOnce the specified number of rounds have been reached, the scores will be totaled and the player with the most points wins.");
@@ -109,7 +109,7 @@ public class Main {
 		JButton back = new JButton("Back to Main Menu");
 		instrucPanel.add(back, BorderLayout.SOUTH);
 		back.setFont(buttonFont);
-		back.setBackground(new Color(200,143,76));
+		back.setBackground(Color.decode("#f1c40f"));
 
 		back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

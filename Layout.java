@@ -13,6 +13,8 @@ import java.util.Scanner;
 import java.util.Random;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.awt.image.*;
+import javax.imageio.*;
 
 public class Layout{
     final static boolean shouldFill = true;
@@ -36,8 +38,35 @@ public class Layout{
 
 	private Runnable chatSender;
 	private Runnable chatReceiver;
+    private static ImageIcon buttonIcon = new ImageIcon("src/button.png");
 
-    private String wordToGuess="";
+    private static ImageIcon blackIcon = new ImageIcon("src/black.jpg");
+    private static Image img = blackIcon.getImage() ;  
+    private static Image newimg = img.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
+    
+    private static ImageIcon blueIcon = new ImageIcon("src/blue.png");
+    private static Image img2 = blueIcon.getImage() ;  
+    private static Image newimg2 = img2.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
+ 
+    private static ImageIcon yellowIcon = new ImageIcon("src/yellow.png");
+    private static Image img3 = yellowIcon.getImage() ;  
+    private static Image newimg3 = img3.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
+
+    private static ImageIcon greenIcon = new ImageIcon("src/green.png");
+    private static Image img4 = greenIcon.getImage() ;  
+    private static Image newimg4 = img4.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
+
+    private static ImageIcon redIcon = new ImageIcon("src/red.png");
+    private static Image img5 = redIcon.getImage() ;  
+    private static Image newimg5 = img5.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
+
+    private static ImageIcon clearIcon = new ImageIcon("src/clear.png");
+    private static Image img6 = clearIcon.getImage() ;  
+    private static Image newimg6 = img6.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
+
+
+    
+        
 
     public Layout (Player player, String lobbyId, DataOutputStream out, InputStream inFromServer) {
         this.out=out;
@@ -51,6 +80,7 @@ public class Layout{
             public void run() {
                 createAndShowGUI();
                 chatLobby();
+                startGame();
             }
         });
     }
@@ -60,7 +90,9 @@ public class Layout{
 
     	JPanel mainPanel = new JPanel(new BorderLayout());
     	mainPanel.setPreferredSize(new Dimension(1200,600));
+        mainPanel.setBackground(Color.orange);
     	pane.add(mainPanel);
+
 
     	JPanel topPanel = new JPanel(new BorderLayout());
     	topPanel.setPreferredSize(new Dimension(1200,450));
@@ -77,12 +109,17 @@ public class Layout{
     	//=============USERNAME===============//
     	JTextArea name = new JTextArea(player.getName());
     	name.setPreferredSize(new Dimension(300,25));
+        name.setFont(new Font("Helvetica", Font.BOLD, 14));
     	name.setEditable(false);
+        name.setBackground(Color.decode("#2ecc71"));
     	name.setOpaque(true);
     	leftPanel.add(name, BorderLayout.NORTH);
 
     	//===============SCORE================//
     	JPanel scoreAndTime = new JPanel(new BorderLayout());
+        scoreAndTime.setOpaque(false);
+        
+      
     	scoreAndTime.setPreferredSize(new Dimension(300,50));
     	leftPanel.add(scoreAndTime, BorderLayout.CENTER);
 
@@ -90,22 +127,26 @@ public class Layout{
     	score.setPreferredSize(new Dimension(200,25));
     	score.setEditable(false);
     	score.setOpaque(true);
+        score.setBackground(Color.decode("#2ecc71"));
     	scoreAndTime.add(score, BorderLayout.NORTH);
 
     	wordArea = new JTextArea("Word:");
-    	score.setPreferredSize(new Dimension(200,25));
-    	score.setEditable(false);
-    	score.setOpaque(true);
+    	wordArea.setPreferredSize(new Dimension(200,25));
+    	wordArea.setEditable(false);
+    	wordArea.setOpaque(true);
+        wordArea.setBackground(Color.decode("#2ecc71"));
     	scoreAndTime.add(wordArea, BorderLayout.CENTER);
 
     	timeRemaining = new JTextArea("Time Remaining: ");
     	timeRemaining.setPreferredSize(new Dimension(200,25));
     	timeRemaining.setEditable(false);
     	timeRemaining.setOpaque(true);
+        timeRemaining.setBackground(Color.decode("#2ecc71"));
     	scoreAndTime.add(timeRemaining, BorderLayout.SOUTH);
 
      	//============FOR ALL CHATS============//
     	JPanel chatPanel = new JPanel(new BorderLayout());
+        chatPanel.setBackground(Color.decode("#bdc3c7"));
 		chatPanel.setPreferredSize(new Dimension(300,350));
 		chatPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		leftPanel.add(chatPanel, BorderLayout.SOUTH);
@@ -126,7 +167,10 @@ public class Layout{
 		msgHere.setPreferredSize(new Dimension(200,50));
 		msgArea.add(msgHere, BorderLayout.CENTER);
 
-		JButton sendMsg = new JButton("Send");
+		
+        JButton sendMsg = new JButton (buttonIcon);
+        sendMsg.setBorder(BorderFactory.createEmptyBorder());
+        sendMsg.setContentAreaFilled(false);
 		sendMsg.setPreferredSize(new Dimension(100,50));
 		msgArea.add(sendMsg, BorderLayout.EAST);
 
@@ -160,17 +204,49 @@ public class Layout{
 
 		//=============AREA TO DRAW==============//
     	canvas.setPreferredSize(new Dimension(600,450));
+       
     	topPanel.add(canvas, BorderLayout.CENTER);
     	JPanel pallettePanel = new JPanel();
     	pallettePanel.setPreferredSize(new Dimension(200,200));
 		pallettePanel.setLayout(null);
-		pallettePanel.setBackground(Color.decode("#95a5a6"));
-		JButton clearBtn = new JButton("Clear");
-		JButton blackBtn = new JButton("black");
-		JButton redBtn = new JButton("red");
-		JButton blueBtn = new JButton("blue");
-		JButton yellowBtn = new JButton("yellow");
-		JButton greenBtn = new JButton("green");
+		pallettePanel.setBackground(Color.decode("#ecf0f1"));
+        
+        clearIcon = new ImageIcon( newimg6 );
+		JButton clearBtn = new JButton(clearIcon);
+        clearBtn.setBorder(BorderFactory.createEmptyBorder());
+        clearBtn.setContentAreaFilled(false);
+		clearBtn.setPreferredSize(new Dimension(120,120));
+        
+        blackIcon = new ImageIcon( newimg );
+		JButton blackBtn = new JButton(blackIcon);
+        blackBtn.setBorder(BorderFactory.createEmptyBorder());
+        blackBtn.setContentAreaFilled(false);
+		blackBtn.setPreferredSize(new Dimension(120,120));
+
+        redIcon = new ImageIcon( newimg5 );
+		JButton redBtn = new JButton(redIcon);
+        redBtn.setBorder(BorderFactory.createEmptyBorder());
+        redBtn.setContentAreaFilled(false);
+		redBtn.setPreferredSize(new Dimension(120,120));
+
+        blueIcon = new ImageIcon( newimg2 );
+		JButton blueBtn = new JButton(blueIcon);
+        blueBtn.setBorder(BorderFactory.createEmptyBorder());
+        blueBtn.setContentAreaFilled(false);
+		blueBtn.setPreferredSize(new Dimension(120,120));
+            
+        yellowIcon = new ImageIcon( newimg3 );
+		JButton yellowBtn = new JButton(yellowIcon);
+        yellowBtn.setBorder(BorderFactory.createEmptyBorder());
+        yellowBtn.setContentAreaFilled(false);
+		yellowBtn.setPreferredSize(new Dimension(120,120));
+        
+        greenIcon = new ImageIcon( newimg4 );
+		JButton greenBtn = new JButton(greenIcon);
+        greenBtn.setBorder(BorderFactory.createEmptyBorder());
+        greenBtn.setContentAreaFilled(false);
+		greenBtn.setPreferredSize(new Dimension(120,120));
+
 		clearBtn.setBounds(0,10,0,0);
 		clearBtn.setSize(new Dimension(70,50));
 		clearBtn.setBackground(Color.decode("#7f8c8d"));
@@ -242,6 +318,7 @@ public class Layout{
     	//======ALL PLAYER SCORES AND EXIT==========//
     	JPanel bottomPanel = new JPanel(new BorderLayout());
     	bottomPanel.setPreferredSize(new Dimension(1000,150));
+        bottomPanel.setBackground(Color.decode("#ecf0f1"));
     	mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
     	//=============ALL PLAYERS============//
@@ -256,6 +333,7 @@ public class Layout{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//frame.setPreferredSize(new Dimension(1200, 800));
         frame.setPreferredSize(new Dimension(1200, 600));
+        frame.setBackground(Color.white);
 
         //Set up the content pane.
         addComponentsToPane(frame);
@@ -265,6 +343,26 @@ public class Layout{
         frame.setFocusable(true);
         frame.setVisible(true);
         frame.setResizable(false);
+    }
+
+    private static void startGame(){
+    	//int numRounds=10; //temporary; must be dynamic
+    	//for(int i=0; i<numRounds; i++){
+    		Random rand=new Random();
+    		//getting the word to draw
+    		try{
+    			timeRemaining.setText("Time Remaining: 60 secs.");
+    			canGuess=true;
+	    		int randomNum = rand.nextInt(106);
+	    		word = Files.readAllLines(Paths.get("wordpool.txt")).get(randomNum);
+	    		System.out.println("The word to guess is: "+word);
+	    		wordArea.setText("Word: "+word);
+	    		cd = new Countdown(timeRemaining);
+    		}catch(IOException e) { // error cannot connect to server
+			  e.printStackTrace();
+			  System.out.println("Cannot read file");
+			}
+    	//}
     }
 
    	private TcpPacket.ConnectPacket joinLobby (){
@@ -314,9 +412,4 @@ public class Layout{
 		  System.out.println("Cannot find (or disconnected from) Server");
 		}
 	}
-
-    public void setWord(String word){
-        this.word=word;
-        System.out.println(word);
-    }
 }
