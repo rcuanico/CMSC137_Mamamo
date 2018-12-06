@@ -37,6 +37,8 @@ public class Layout{
 	private Runnable chatSender;
 	private Runnable chatReceiver;
 
+    private String wordToGuess="";
+
     public Layout (Player player, String lobbyId, DataOutputStream out, InputStream inFromServer) {
         this.out=out;
         this.inFromServer=inFromServer;
@@ -49,7 +51,6 @@ public class Layout{
             public void run() {
                 createAndShowGUI();
                 chatLobby();
-                startGame();
             }
         });
     }
@@ -266,26 +267,6 @@ public class Layout{
         frame.setResizable(false);
     }
 
-    private static void startGame(){
-    	//int numRounds=10; //temporary; must be dynamic
-    	//for(int i=0; i<numRounds; i++){
-    		Random rand=new Random();
-    		//getting the word to draw
-    		try{
-    			timeRemaining.setText("Time Remaining: 60 secs.");
-    			canGuess=true;
-	    		int randomNum = rand.nextInt(106);
-	    		word = Files.readAllLines(Paths.get("wordpool.txt")).get(randomNum);
-	    		System.out.println("The word to guess is: "+word);
-	    		wordArea.setText("Word: "+word);
-	    		cd = new Countdown(timeRemaining);
-    		}catch(IOException e) { // error cannot connect to server
-			  e.printStackTrace();
-			  System.out.println("Cannot read file");
-			}
-    	//}
-    }
-
    	private TcpPacket.ConnectPacket joinLobby (){
 		TcpPacket.ConnectPacket connectPacket = null;
 		try {
@@ -333,4 +314,9 @@ public class Layout{
 		  System.out.println("Cannot find (or disconnected from) Server");
 		}
 	}
+
+    public void setWord(String word){
+        this.word=word;
+        System.out.println(word);
+    }
 }

@@ -9,6 +9,7 @@ public class ChatReceiver extends Thread{
 	private static InputStream inFromServer;
 	private Boolean listen=true;
 	private JTextArea chats;
+    private String word;
 
 	public ChatReceiver (InputStream inFromServer, JTextArea chats){
 		this.chats=chats;
@@ -25,7 +26,12 @@ public class ChatReceiver extends Thread{
 					TcpPacket packet = TcpPacket.parseFrom(lobbyData);
 					if(packet.getType()==TcpPacket.PacketType.CHAT){
 						TcpPacket.ChatPacket lobbyMsg = TcpPacket.ChatPacket.parseFrom(lobbyData);
-						chats.setText(chats.getText()+lobbyMsg.getPlayer().getName()+": "+lobbyMsg.getMessage()+"\n");
+                        if(lobbyMsg.getMessage().startsWith("The word to guess is: ")){
+                            word = lobbyMsg.getMessage().substring(lobbyMsg.getMessage().lastIndexOf(" ")+1);
+                            System.out.println(word);
+                        }else{
+                            chats.setText(chats.getText()+lobbyMsg.getPlayer().getName()+": "+lobbyMsg.getMessage()+"\n");
+                        }
 						System.out.println(lobbyMsg.getPlayer().getName()+": "+lobbyMsg.getMessage());
 					}else if(packet.getType()==TcpPacket.PacketType.CONNECT){
 						TcpPacket.ConnectPacket lobbyMsg = TcpPacket.ConnectPacket.parseFrom(lobbyData);

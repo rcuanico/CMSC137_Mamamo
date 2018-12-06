@@ -119,6 +119,7 @@ public class newGameDialog extends JDialog {
 
 		startGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+                GameServer game = new GameServer(Integer.parseInt(numRound.getText()), lobbyId, out, inFromServer);
 				Layout layout = new Layout(player, lobbyId, out, inFromServer);
 				frame.dispose();
 			}
