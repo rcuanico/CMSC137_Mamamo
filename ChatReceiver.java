@@ -35,8 +35,8 @@ public class ChatReceiver extends Thread{
                         	timeRemaining.setText(lobbyMsg.getMessage());
                         }else{
                             chats.setText(chats.getText()+lobbyMsg.getPlayer().getName()+": "+lobbyMsg.getMessage()+"\n");
+                            System.out.println(lobbyMsg.getPlayer().getName()+": "+lobbyMsg.getMessage());
                         }
-						System.out.println(lobbyMsg.getPlayer().getName()+": "+lobbyMsg.getMessage());
 					}else if(packet.getType()==TcpPacket.PacketType.CONNECT){
 						TcpPacket.ConnectPacket lobbyMsg = TcpPacket.ConnectPacket.parseFrom(lobbyData);
 						chats.setText(chats.getText()+lobbyMsg.getPlayer().getName()+" has connected to the lobby."+"\n");

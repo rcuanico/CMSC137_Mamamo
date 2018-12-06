@@ -19,7 +19,6 @@ public class Countdown{
 		timer.scheduleAtFixedRate(new TimerTask() {
 	        public void run() {
 	        	setInterval();
-	            //System.out.println(setInterval());
 	        }
 	    }, 1000, 1000);
 	}
@@ -33,7 +32,7 @@ public class Countdown{
 		}catch(IOException e) { // error cannot connect to server
 			  e.printStackTrace();
 			  System.out.println("Cannot send");
-			}
+		}
 
 	    if (interval == 1){
 	    	System.out.println("Time's Up!");

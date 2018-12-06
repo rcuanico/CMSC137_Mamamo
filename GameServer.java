@@ -8,23 +8,40 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class GameServer {
-    private int numRound;
+	private static Socket server;
+	private static OutputStream outToServer;
+    private static int numRound;
     private static Player player;
     private static DataOutputStream out;
 	private static InputStream inFromServer;
-    private String lobbyId;
+    private static String lobbyId;
     private static String word="";
 
-    public GameServer(int numRound, String lobbyId, DataOutputStream out, InputStream inFromServer){
-        this.numRound=numRound;
-        this.player=createPlayer("server");
-        this.lobbyId=lobbyId;
-        this.out=out;
-        this.inFromServer=inFromServer;
-        this.startGame();
-    }
+    public static void main(String[] args) {
+		try { 
+			String serverName = args[0];
+			int port = Integer.parseInt(args[1]);
+			server = new Socket(serverName, port);
+			System.out.println("Just connected to " + server.getRemoteSocketAddress());
 
-   	private TcpPacket.ConnectPacket joinLobby (){
+			outToServer = server.getOutputStream();
+			out = new DataOutputStream(outToServer);
+			inFromServer = server.getInputStream();
+
+			numRound=Integer.parseInt(args[2]);
+			player=createPlayer("server");
+			lobbyId=args[3];
+			joinLobby();
+	        startGame();
+	        System.out.println("WOI");
+
+		}catch(IOException e) { // error cannot connect to server
+		  e.printStackTrace();
+		  System.out.println("Cannot find (or disconnected from) Server");
+		}
+	}
+
+   	private static TcpPacket.ConnectPacket joinLobby (){
 		TcpPacket.ConnectPacket connectPacket = null;
 		try {
 				connectPacket = TcpPacket.ConnectPacket.newBuilder()
@@ -58,27 +75,11 @@ public class GameServer {
 	}
 
     private static void startGame(){
-    	//for(int i=0; i<numRound; i++){
-    		Random rand=new Random();
-    		//getting the word to draw
-    		try{
-	    		int randomNum = rand.nextInt(106);
-	    		word = Files.readAllLines(Paths.get("wordpool.txt")).get(randomNum);
-                chatLobby();
-                TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
-					chatPacket.setType(TcpPacket.PacketType.CHAT)
-					.setPlayer(player)
-					.setMessage("The word to guess is: "+word);
-				out.write(chatPacket.build().toByteArray());
-    		}catch(IOException e) { // error cannot connect to server
-			  e.printStackTrace();
-			  System.out.println("Cannot read file");
-			}
-    	//}
+        chatLobby();
     }
 
 	private static void chatLobby(){
-		ServerReceiver receiver = new ServerReceiver(inFromServer, word, player, out);
+		ServerReceiver receiver = new ServerReceiver(inFromServer, player, out, numRound);
 		receiver.start();
 	}
 }

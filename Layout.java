@@ -81,6 +81,21 @@ public class Layout{
         });
     }
 
+    public Layout (int numRound, Player player, String lobbyId, DataOutputStream out, InputStream inFromServer) {
+        this.out=out;
+        this.inFromServer=inFromServer;
+        this.player=player;
+        this.lobbyId=lobbyId;
+
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+                joinLobby();
+                chatLobby();
+            }
+        });
+    }
+
     public static void addComponentsToPane(JFrame frame) {
     	Container pane = frame.getContentPane();
 
