@@ -22,7 +22,6 @@ public class GameServer {
         this.out=out;
         this.inFromServer=inFromServer;
         this.startGame();
-        chatLobby();
     }
 
    	private TcpPacket.ConnectPacket joinLobby (){
@@ -65,15 +64,12 @@ public class GameServer {
     		try{
 	    		int randomNum = rand.nextInt(106);
 	    		word = Files.readAllLines(Paths.get("wordpool.txt")).get(randomNum);
-	    		System.out.println("The word to guess is: "+word);
-                   
+                chatLobby();
                 TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
 					chatPacket.setType(TcpPacket.PacketType.CHAT)
 					.setPlayer(player)
 					.setMessage("The word to guess is: "+word);
 				out.write(chatPacket.build().toByteArray());
-
-	    		//Countdown cd = new Countdown(timeRemaining);
     		}catch(IOException e) { // error cannot connect to server
 			  e.printStackTrace();
 			  System.out.println("Cannot read file");

@@ -21,19 +21,20 @@ public class ServerReceiver extends Thread{
 	}
 
 	public void run() {
+		Countdown cd = new Countdown(player, out);
 		while(listen){
 			try{
 				byte[] lobbyData = new byte[1024];	//getting server response
 				int count = inFromServer.read(lobbyData);
-				if(count>=0){
+				if(cd.getSecs()==0){
 					lobbyData = Arrays.copyOf(lobbyData, count);
 					TcpPacket packet = TcpPacket.parseFrom(lobbyData);
 					if(packet.getType()==TcpPacket.PacketType.CONNECT){
-						   TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
-					chatPacket.setType(TcpPacket.PacketType.CHAT)
-					.setPlayer(player)
-					.setMessage("The word to guess is: "+word);
-				out.write(chatPacket.build().toByteArray());
+						TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
+							chatPacket.setType(TcpPacket.PacketType.CHAT)
+							.setPlayer(player)
+							.setMessage("The word to guess is: "+word);
+						out.write(chatPacket.build().toByteArray());
 					}
 				}else{
 					listen=false;

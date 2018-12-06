@@ -10,10 +10,12 @@ public class ChatReceiver extends Thread{
 	private Boolean listen=true;
 	private JTextArea chats;
     private String word;
+    private JTextArea timeRemaining;
 
-	public ChatReceiver (InputStream inFromServer, JTextArea chats){
+	public ChatReceiver (InputStream inFromServer, JTextArea chats, JTextArea timeRemaining){
 		this.chats=chats;
 		this.inFromServer = inFromServer;
+		this.timeRemaining = timeRemaining;
 	}
 
 	public void run() {
@@ -29,6 +31,8 @@ public class ChatReceiver extends Thread{
                         if(lobbyMsg.getMessage().startsWith("The word to guess is: ")){
                             word = lobbyMsg.getMessage().substring(lobbyMsg.getMessage().lastIndexOf(" ")+1);
                             System.out.println(word);
+                        }else if(lobbyMsg.getMessage().startsWith("Time left: ")){
+                        	timeRemaining.setText(lobbyMsg.getMessage());
                         }else{
                             chats.setText(chats.getText()+lobbyMsg.getPlayer().getName()+": "+lobbyMsg.getMessage()+"\n");
                         }

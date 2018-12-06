@@ -17,9 +17,6 @@ import java.awt.image.*;
 import javax.imageio.*;
 
 public class Layout{
-    final static boolean shouldFill = true;
-    final static boolean shouldWeightX = true;
-    final static boolean RIGHT_TO_LEFT = false;
     static Canvas canvas = new Canvas();
 
     private static DataOutputStream out;
@@ -80,7 +77,6 @@ public class Layout{
             public void run() {
                 createAndShowGUI();
                 chatLobby();
-                startGame();
             }
         });
     }
@@ -345,26 +341,6 @@ public class Layout{
         frame.setResizable(false);
     }
 
-    private static void startGame(){
-    	//int numRounds=10; //temporary; must be dynamic
-    	//for(int i=0; i<numRounds; i++){
-    		Random rand=new Random();
-    		//getting the word to draw
-    		try{
-    			timeRemaining.setText("Time Remaining: 60 secs.");
-    			canGuess=true;
-	    		int randomNum = rand.nextInt(106);
-	    		word = Files.readAllLines(Paths.get("wordpool.txt")).get(randomNum);
-	    		System.out.println("The word to guess is: "+word);
-	    		wordArea.setText("Word: "+word);
-	    		cd = new Countdown(timeRemaining);
-    		}catch(IOException e) { // error cannot connect to server
-			  e.printStackTrace();
-			  System.out.println("Cannot read file");
-			}
-    	//}
-    }
-
    	private TcpPacket.ConnectPacket joinLobby (){
 		TcpPacket.ConnectPacket connectPacket = null;
 		try {
@@ -392,7 +368,7 @@ public class Layout{
 	}
 
 	private static void chatLobby(){
-		ChatReceiver receiver = new ChatReceiver(inFromServer, chats);
+		ChatReceiver receiver = new ChatReceiver(inFromServer, chats, timeRemaining);
 		receiver.start();
 	}
 
