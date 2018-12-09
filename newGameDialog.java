@@ -18,7 +18,7 @@ public class newGameDialog extends JDialog {
 	private JTextArea numPlayMsg;
 	private JTextArea numPlay;
 	private JTextArea numRoundMsg;
-	private JTextArea numRound;
+	private static JTextArea numRound;
 	private static JTextArea lobbyMsg;
 
 	private static DataOutputStream out;
@@ -119,15 +119,6 @@ public class newGameDialog extends JDialog {
 
 		startGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try{
-					Runtime rt = Runtime.getRuntime();
-					String str = "java GameServer 202.92.144.45 80 " + Integer.parseInt(numRound.getText()) + " " + lobbyId;
-					Process pr = rt.exec(str);
-				}catch(IOException error) { // error cannot connect to server
-				  error.printStackTrace();
-				  System.out.println("Cannot open Main.java");
-				}
-                //GameServer game = new GameServer(Integer.parseInt(numRound.getText()), lobbyId, out, inFromServer);
 				Layout layout = new Layout(player, lobbyId, out, inFromServer);
 				frame.dispose();
 			}
@@ -156,6 +147,11 @@ public class newGameDialog extends JDialog {
 			int count = inFromServer.read(lobbyData);
 			lobbyData = Arrays.copyOf(lobbyData, count);
 			lobbyId = TcpPacket.CreateLobbyPacket.parseFrom(lobbyData).getLobbyId();	//get id of created lobby
+
+			Runtime rt = Runtime.getRuntime();
+			String str = "java GameServer 202.92.144.45 80 " + Integer.parseInt(numRound.getText()) + " " + lobbyId;
+			Process pr = rt.exec(str);
+
 		}catch(IOException e) { // error cannot connect to server
 		  e.printStackTrace();
 		  System.out.println("Cannot find (or disconnected from) Server");

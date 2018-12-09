@@ -31,7 +31,11 @@ public class ServerReceiver extends Thread{
 			Random rand=new Random();
 			int randomNum = rand.nextInt(106);
 			word = Files.readAllLines(Paths.get("wordpool.txt")).get(randomNum);
-			System.out.println(word);
+			TcpPacket.ChatPacket.Builder broadcastWord = TcpPacket.ChatPacket.newBuilder();
+				broadcastWord.setType(TcpPacket.PacketType.CHAT)
+				.setPlayer(player)
+				.setMessage("The word to guess is: "+word);
+			out.write(broadcastWord.build().toByteArray());
 
 			while(i<numRound){
 				try{
@@ -48,11 +52,21 @@ public class ServerReceiver extends Thread{
 							out.write(chatPacket.build().toByteArray());
 						}
 					}else{
-						new Countdown(player, out);
+						TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
+							chatPacket.setType(TcpPacket.PacketType.CHAT)
+							.setPlayer(player)
+							.setMessage("Time's up! Starting a new round...");
+						out.write(chatPacket.build().toByteArray());
+
+						cd = new Countdown(player, out);
 						rand=new Random();
 						randomNum = rand.nextInt(106);
 			    		word = Files.readAllLines(Paths.get("wordpool.txt")).get(randomNum);
-			    		System.out.println(word);
+			    		chatPacket = TcpPacket.ChatPacket.newBuilder();
+								chatPacket.setType(TcpPacket.PacketType.CHAT)
+								.setPlayer(player)
+								.setMessage("The word to guess is: "+word);
+							out.write(chatPacket.build().toByteArray());
 						i++;
 					}
 				}catch(IOException e) { // error cannot connect to server
@@ -60,6 +74,11 @@ public class ServerReceiver extends Thread{
 				  System.out.println("Cannot read file");
 				}
 			}
+			TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
+				chatPacket.setType(TcpPacket.PacketType.CHAT)
+				.setPlayer(player)
+				.setMessage("THE GAME IS OVER!");
+			out.write(chatPacket.build().toByteArray());
 		}catch(IOException e) { // error cannot connect to server
 		  e.printStackTrace();
 		  System.out.println("Cannot read file");

@@ -7,12 +7,13 @@ import java.io.*;
 import java.net.*;
 
 public class Countdown{
-	private static int interval = 60;
+	private static int interval;
 	private static Timer timer;
 	private static Player player;
 	private static DataOutputStream out;
 
 	public Countdown(Player player, DataOutputStream out){
+		this.interval=60;
 		this.player=player;
 		this.out=out;
 		timer = new Timer();
@@ -22,6 +23,7 @@ public class Countdown{
 	        }
 	    }, 1000, 1000);
 	}
+	
 	private static final int setInterval() {
 		try{
 			TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();

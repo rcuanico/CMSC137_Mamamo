@@ -11,11 +11,13 @@ public class ChatReceiver extends Thread{
 	private JTextArea chats;
     private String word;
     private JTextArea timeRemaining;
+    private Layout layout;
 
-	public ChatReceiver (InputStream inFromServer, JTextArea chats, JTextArea timeRemaining){
+	public ChatReceiver (InputStream inFromServer, JTextArea chats, JTextArea timeRemaining, Layout layout){
 		this.chats=chats;
 		this.inFromServer = inFromServer;
 		this.timeRemaining = timeRemaining;
+		this.layout = layout;
 	}
 
 	public void run() {
@@ -27,24 +29,32 @@ public class ChatReceiver extends Thread{
 					lobbyData = Arrays.copyOf(lobbyData, count);
 					TcpPacket packet = TcpPacket.parseFrom(lobbyData);
 					if(packet.getType()==TcpPacket.PacketType.CHAT){
-						TcpPacket.ChatPacket lobbyMsg = TcpPacket.ChatPacket.parseFrom(lobbyData);
-                        if(lobbyMsg.getMessage().startsWith("The word to guess is: ")){
-                            word = lobbyMsg.getMessage().substring(lobbyMsg.getMessage().lastIndexOf(" ")+1);
-                            System.out.println(word);
-                        }else if(lobbyMsg.getMessage().startsWith("Time left: ")){
-                        	timeRemaining.setText(lobbyMsg.getMessage());
-                        }else{
-                            chats.setText(chats.getText()+lobbyMsg.getPlayer().getName()+": "+lobbyMsg.getMessage()+"\n");
-                            System.out.println(lobbyMsg.getPlayer().getName()+": "+lobbyMsg.getMessage());
+						TcpPacket.ChatPacket lobbyMsg1 = TcpPacket.ChatPacket.parseFrom(lobbyData);
+						System.out.println(lobbyMsg1.getMessage());
+                        if(lobbyMsg1.getMessage().startsWith("The word to guess is: ")){
+                            word = lobbyMsg1.getMessage().substring(lobbyMsg1.getMessage().lastIndexOf(" ")+1);
+                            layout.changeWord(word);
+                            layout.youCanGuess();
+                        }else if(lobbyMsg1.getMessage().startsWith("Time left: ")){
+                        	timeRemaining.setText(lobbyMsg1.getMessage());
+                        	String time = lobbyMsg1.getMessage().substring(lobbyMsg1.getMessage().lastIndexOf(" ")+1);
+                        	layout.setTime(Integer.parseInt(time));
+                        }else if(!lobbyMsg1.getMessage().equals(word) && !lobbyMsg1.getPlayer().getName().equals("server")){
+                        	chats.setText(chats.getText()+lobbyMsg1.getMessage()+"\n");
+                            System.out.println(lobbyMsg1.getMessage());
                         }
 					}else if(packet.getType()==TcpPacket.PacketType.CONNECT){
-						TcpPacket.ConnectPacket lobbyMsg = TcpPacket.ConnectPacket.parseFrom(lobbyData);
-						chats.setText(chats.getText()+lobbyMsg.getPlayer().getName()+" has connected to the lobby."+"\n");
-						System.out.println(lobbyMsg.getPlayer().getName()+" has connected to the lobby.");
+						TcpPacket.ConnectPacket lobbyMsg1 = TcpPacket.ConnectPacket.parseFrom(lobbyData);
+						if(!lobbyMsg1.getPlayer().getName().equals("server")){
+							chats.setText(chats.getText()+lobbyMsg1.getPlayer().getName()+" has connected to the lobby."+"\n");
+							System.out.println(lobbyMsg1.getPlayer().getName()+" has connected to the lobby.");
+						}
 					}else if(packet.getType()==TcpPacket.PacketType.DISCONNECT){
-						TcpPacket.DisconnectPacket lobbyMsg = TcpPacket.DisconnectPacket.parseFrom(lobbyData);
-						chats.setText(chats.getText()+lobbyMsg.getPlayer().getName()+" has disconnected from the lobby."+"\n");
-						System.out.println(lobbyMsg.getPlayer().getName()+" has disconnected from the lobby.");
+						TcpPacket.DisconnectPacket lobbyMsg1 = TcpPacket.DisconnectPacket.parseFrom(lobbyData);
+						if(!lobbyMsg1.getPlayer().getName().equals("server")){
+							chats.setText(chats.getText()+lobbyMsg1.getPlayer().getName()+" has disconnected from the lobby."+"\n");
+							System.out.println(lobbyMsg1.getPlayer().getName()+" has disconnected from the lobby.");
+						}
 					}
 					chats.update(chats.getGraphics());
 				}else{

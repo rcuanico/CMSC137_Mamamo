@@ -32,6 +32,8 @@ public class Layout{
 	private static Countdown cd;
 	private static String word="";
 	private static JTextArea timeRemaining;
+    private static JTextArea score;
+    private static int time;
 
 	private Runnable chatSender;
 	private Runnable chatReceiver;
@@ -61,7 +63,7 @@ public class Layout{
     private static Image img6 = clearIcon.getImage() ;  
     private static Image newimg6 = img6.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
 
-
+    private static Layout layout;
     
         
 
@@ -70,6 +72,7 @@ public class Layout{
         this.inFromServer=inFromServer;
         this.player=player;
         this.lobbyId=lobbyId;
+        this.layout=this;
 
         joinLobby();
 
@@ -134,7 +137,7 @@ public class Layout{
     	scoreAndTime.setPreferredSize(new Dimension(300,50));
     	leftPanel.add(scoreAndTime, BorderLayout.CENTER);
 
-    	JTextArea score = new JTextArea("Score: ");
+    	score = new JTextArea("Score: ");
     	score.setPreferredSize(new Dimension(200,25));
     	score.setEditable(false);
     	score.setOpaque(true);
@@ -202,12 +205,11 @@ public class Layout{
 					  System.out.println("Cannot open Main.java");
 					}
 				}else if(msgHere.getText().equals(word)&&!word.equals("")&&canGuess==true){
-					chats.setText(chats.getText()+player.getName()+" guessed the word! +" +cd.getSecs()+" points."+"\n");
-					System.out.println(player.getName()+" guessed the word! +" +cd.getSecs()+" points.");
-					totalScore+=cd.getSecs();
+					chats.setText(chats.getText()+player.getName()+" guessed the word! +" +getTime()+" points."+"\n");
+					System.out.println(player.getName()+" guessed the word! +" +getTime()+" points.");
+					totalScore+=getTime();
 					canGuess=false;
 					score.setText("Score: "+Integer.toString(totalScore));
-					//score.update(score.getGraphics());
 				}
 				msgHere.setText("");
 			}
@@ -383,7 +385,7 @@ public class Layout{
 	}
 
 	private static void chatLobby(){
-		ChatReceiver receiver = new ChatReceiver(inFromServer, chats, timeRemaining);
+		ChatReceiver receiver = new ChatReceiver(inFromServer, chats, timeRemaining, layout);
 		receiver.start();
 	}
 
@@ -403,4 +405,21 @@ public class Layout{
 		  System.out.println("Cannot find (or disconnected from) Server");
 		}
 	}
+
+    public static void changeWord(String newWord){
+        word=newWord;
+    }
+
+    public static void youCanGuess(){
+        canGuess=true;
+    }
+
+    public static void setTime(int timeLeft){
+        time=timeLeft;
+    }
+
+    public static int getTime(){
+        return(time);
+    }
+
 }

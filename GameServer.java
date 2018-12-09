@@ -32,8 +32,6 @@ public class GameServer {
 			player=createPlayer("server");
 			lobbyId=args[3];
 			joinLobby();
-	        startGame();
-	        System.out.println("WOI");
 
 		}catch(IOException e) { // error cannot connect to server
 		  e.printStackTrace();
@@ -56,7 +54,7 @@ public class GameServer {
 				lobbyData = Arrays.copyOf(lobbyData, count);
 				TcpPacket.ConnectPacket lobbyMsg = TcpPacket.ConnectPacket.parseFrom(lobbyData);
 				if(lobbyMsg.getType() == TcpPacket.PacketType.CONNECT){
-					System.out.println("You have successfully connected to the lobby.");
+					startGame();
 				}else{
 					System.out.println("Connection to lobby failed.");
 				}
@@ -79,7 +77,7 @@ public class GameServer {
     }
 
 	private static void chatLobby(){
-		ServerReceiver receiver = new ServerReceiver(inFromServer, player, out, numRound);
-		receiver.start();
+		ServerReceiver receiver1 = new ServerReceiver(inFromServer, player, out, numRound);
+		receiver1.start();
 	}
 }
