@@ -29,7 +29,6 @@ public class Layout{
 	private static JPanel msgArea;
 	private static JTextArea wordArea;
 
-	private static Countdown cd;
 	private static String word="";
 	private static JTextArea timeRemaining;
     private static JTextArea score;
@@ -408,6 +407,7 @@ public class Layout{
 
     public static void changeWord(String newWord){
         word=newWord;
+        System.out.println(word);
     }
 
     public static void youCanGuess(){

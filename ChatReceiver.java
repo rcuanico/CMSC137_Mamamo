@@ -30,7 +30,6 @@ public class ChatReceiver extends Thread{
 					TcpPacket packet = TcpPacket.parseFrom(lobbyData);
 					if(packet.getType()==TcpPacket.PacketType.CHAT){
 						TcpPacket.ChatPacket lobbyMsg1 = TcpPacket.ChatPacket.parseFrom(lobbyData);
-						System.out.println(lobbyMsg1.getMessage());
                         if(lobbyMsg1.getMessage().startsWith("The word to guess is: ")){
                             word = lobbyMsg1.getMessage().substring(lobbyMsg1.getMessage().lastIndexOf(" ")+1);
                             layout.changeWord(word);
@@ -40,20 +39,19 @@ public class ChatReceiver extends Thread{
                         	String time = lobbyMsg1.getMessage().substring(lobbyMsg1.getMessage().lastIndexOf(" ")+1);
                         	layout.setTime(Integer.parseInt(time));
                         }else if(!lobbyMsg1.getMessage().equals(word) && !lobbyMsg1.getPlayer().getName().equals("server")){
-                        	chats.setText(chats.getText()+lobbyMsg1.getMessage()+"\n");
-                            System.out.println(lobbyMsg1.getMessage());
+                        	chats.setText(chats.getText()+lobbyMsg1.getPlayer().getName()+": "+lobbyMsg1.getMessage()+"\n");
                         }
 					}else if(packet.getType()==TcpPacket.PacketType.CONNECT){
 						TcpPacket.ConnectPacket lobbyMsg1 = TcpPacket.ConnectPacket.parseFrom(lobbyData);
 						if(!lobbyMsg1.getPlayer().getName().equals("server")){
 							chats.setText(chats.getText()+lobbyMsg1.getPlayer().getName()+" has connected to the lobby."+"\n");
-							System.out.println(lobbyMsg1.getPlayer().getName()+" has connected to the lobby.");
+							//System.out.println(lobbyMsg1.getPlayer().getName()+" has connected to the lobby.");
 						}
 					}else if(packet.getType()==TcpPacket.PacketType.DISCONNECT){
 						TcpPacket.DisconnectPacket lobbyMsg1 = TcpPacket.DisconnectPacket.parseFrom(lobbyData);
 						if(!lobbyMsg1.getPlayer().getName().equals("server")){
 							chats.setText(chats.getText()+lobbyMsg1.getPlayer().getName()+" has disconnected from the lobby."+"\n");
-							System.out.println(lobbyMsg1.getPlayer().getName()+" has disconnected from the lobby.");
+							//System.out.println(lobbyMsg1.getPlayer().getName()+" has disconnected from the lobby.");
 						}
 					}
 					chats.update(chats.getGraphics());

@@ -23,7 +23,7 @@ public class Countdown{
 	        }
 	    }, 1000, 1000);
 	}
-	
+
 	private static final int setInterval() {
 		try{
 			TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
