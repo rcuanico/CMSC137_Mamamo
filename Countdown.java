@@ -11,11 +11,13 @@ public class Countdown{
 	private static Timer timer;
 	private static Player player;
 	private static DataOutputStream out;
+	private static boolean stop;
 
 	public Countdown(Player player, DataOutputStream out){
 		this.interval=60;
 		this.player=player;
 		this.out=out;
+		this.stop=false;
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 	        public void run() {
@@ -38,6 +40,7 @@ public class Countdown{
 
 	    if (interval == 1){
 	    	System.out.println("Time's Up!");
+	    	stop=true;
 	        timer.cancel();
 	    }
 	    return --interval;
@@ -45,5 +48,9 @@ public class Countdown{
 
 	public int getSecs(){
 		return this.interval;
+	}
+
+	public boolean didStop(){
+		return this.stop;
 	}
 }

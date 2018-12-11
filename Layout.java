@@ -370,7 +370,7 @@ public class Layout{
 				byte[] lobbyData = new byte[1024];	//getting server response
 				int count = inFromServer.read(lobbyData);
 				lobbyData = Arrays.copyOf(lobbyData, count);
-				TcpPacket.ConnectPacket lobbyMsg = TcpPacket.ConnectPacket.parseFrom(lobbyData);
+				TcpPacket lobbyMsg = TcpPacket.parseFrom(lobbyData);
 				if(lobbyMsg.getType() == TcpPacket.PacketType.CONNECT){
 					System.out.println("You have successfully connected to the lobby.");
 				}else{
