@@ -1,6 +1,7 @@
 # CMSC 137 PROJECT: Picture This
 ###### A requirement for CMSC137 AB-3L that simulates the game Draw My Thing.
 1. Compile all java files using: $ javac *.java
+2. Run UDP server using: $ java Main 202.92.144.45 80
 2. Run Client using: $ java Main 202.92.144.45 80
 
 ###### If protobuf is not yet extracted:
