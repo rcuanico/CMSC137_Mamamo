@@ -23,7 +23,7 @@ public class Layout{
 	private static InputStream inFromServer;
 	private static Player player;
 	private static int totalScore=0;
-	private static boolean canGuess=false;
+	private static boolean canGuess=true;
 	private String lobbyId;
 	private static JTextArea chats;
 	private static JPanel msgArea;

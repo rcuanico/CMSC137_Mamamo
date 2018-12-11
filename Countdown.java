@@ -12,12 +12,14 @@ public class Countdown{
 	private static Player player;
 	private static DataOutputStream out;
 	private static boolean stop;
+	private static String word;
 
-	public Countdown(Player player, DataOutputStream out){
-		this.interval=60;
+	public Countdown(Player player, DataOutputStream out, String word){
+		this.interval=30;
 		this.player=player;
 		this.out=out;
 		this.stop=false;
+		this.word=word;
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 	        public void run() {
@@ -42,6 +44,16 @@ public class Countdown{
 	    	System.out.println("Time's Up!");
 	    	stop=true;
 	        timer.cancel();
+	        try{
+				TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
+					chatPacket.setType(TcpPacket.PacketType.CHAT)
+					.setPlayer(player)
+					.setMessage("Time's up! The correct word is: "+word);
+				out.write(chatPacket.build().toByteArray());
+			}catch(IOException e) { // error cannot connect to server
+				  e.printStackTrace();
+				  System.out.println("Cannot send");
+			}
 	    }
 	    return --interval;
 	}

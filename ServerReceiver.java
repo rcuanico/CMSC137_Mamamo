@@ -28,7 +28,6 @@ public class ServerReceiver extends Thread{
 		int i=0;
 		try{
 			while(i<numRound){
-				Countdown cd = new Countdown(player, out);
 				Random rand=new Random();
 				int randomNum = rand.nextInt(106);
 	    		String word = Files.readAllLines(Paths.get("wordpool.txt")).get(randomNum);
@@ -37,6 +36,7 @@ public class ServerReceiver extends Thread{
 						.setPlayer(player)
 						.setMessage("The word to guess is: "+word);
 					out.write(chatPacket.build().toByteArray());
+				Countdown cd = new Countdown(player, out, word);
 
 				try{
 					while(!cd.didStop()){

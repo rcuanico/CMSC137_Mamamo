@@ -33,13 +33,13 @@ public class ChatReceiver extends Thread{
                         if(lobbyMsg1.getMessage().startsWith("The word to guess is: ")){
                             word = lobbyMsg1.getMessage().substring(lobbyMsg1.getMessage().lastIndexOf(" ")+1);
                             layout.changeWord(word);
-                            layout.youCanGuess();
                         }else if(lobbyMsg1.getMessage().startsWith("Time left: ")){
                         	timeRemaining.setText(lobbyMsg1.getMessage());
                         	String time = lobbyMsg1.getMessage().substring(lobbyMsg1.getMessage().lastIndexOf(" ")+1);
                         	layout.setTime(Integer.parseInt(time));
                         }else if(lobbyMsg1.getMessage().startsWith("Time's up!") || lobbyMsg1.getMessage().startsWith("THE GAME IS OVER")){
                         	chats.setText(chats.getText()+lobbyMsg1.getMessage()+"\n");
+                        	layout.youCanGuess();
                         }else if(lobbyMsg1.getMessage().startsWith(lobbyMsg1.getPlayer().getName()+" guessed")){
                         	chats.setText(chats.getText()+lobbyMsg1.getMessage()+"\n");
                         }else if(!lobbyMsg1.getMessage().equals(word) && !lobbyMsg1.getPlayer().getName().equals("server")){
