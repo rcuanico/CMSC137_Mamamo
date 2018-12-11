@@ -149,7 +149,7 @@ public class newGameDialog extends JDialog {
 			lobbyId = TcpPacket.CreateLobbyPacket.parseFrom(lobbyData).getLobbyId();	//get id of created lobby
 
 			Runtime rt = Runtime.getRuntime();
-			String str = "java GameServer 202.92.144.45 80 " + Integer.parseInt(numRound.getText()) + " " + lobbyId;
+			String str = "java GameServer 202.92.144.45 80 " + Integer.parseInt(numRound.getText()) +" " + lobbyId;
 			Process pr = rt.exec(str);
 
 		}catch(IOException e) { // error cannot connect to server

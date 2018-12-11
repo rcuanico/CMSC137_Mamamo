@@ -206,7 +206,17 @@ public class Layout{
 					  System.out.println("Cannot open Main.java");
 					}
 				}else if(msgHere.getText().equals(word)&&!word.equals("")&&canGuess==true){
-					chats.setText(chats.getText()+player.getName()+" guessed the word! +" +getTime()+" points."+"\n");
+                    try{
+                        TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
+                            chatPacket.setType(TcpPacket.PacketType.CHAT)
+                            .setPlayer(player)
+                            .setMessage(player.getName()+" guessed the word! +" +getTime()+" points.");
+                        out.write(chatPacket.build().toByteArray());
+                    }catch(IOException a) { // error cannot connect to server
+                      a.printStackTrace();
+                      System.out.println("Cannot send to Server");
+                    }
+
 					System.out.println(player.getName()+" guessed the word! +" +getTime()+" points.");
 					totalScore+=getTime();
 					canGuess=false;
