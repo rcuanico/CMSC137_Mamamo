@@ -59,15 +59,14 @@ public class ServerReceiver extends Thread{
 							out.write(chatPacket.build().toByteArray());
 						}
 					}
-
-					if(i!=numRound-1){
-						chatPacket = TcpPacket.ChatPacket.newBuilder();
-							chatPacket.setType(TcpPacket.PacketType.CHAT)
-							.setPlayer(player)
-							.setMessage("Starting a new round...");
-						out.write(chatPacket.build().toByteArray());
-					}
 					i++;
+					// if(i!=numRound){
+					// 	chatPacket = TcpPacket.ChatPacket.newBuilder();
+					// 		chatPacket.setType(TcpPacket.PacketType.CHAT)
+					// 		.setPlayer(player)
+					// 		.setMessage("Starting a new round...");
+					// 	out.write(chatPacket.build().toByteArray());
+					// }
 				}catch(IOException e) { // error cannot connect to server
 				  e.printStackTrace();
 				  System.out.println("Cannot read file");

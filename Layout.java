@@ -430,4 +430,17 @@ public class Layout{
         return(time);
     }
 
+    public static void broadcastScore(){
+        try{
+            TcpPacket.ChatPacket.Builder chatPacket = TcpPacket.ChatPacket.newBuilder();
+                chatPacket.setType(TcpPacket.PacketType.CHAT)
+                .setPlayer(player)
+                .setMessage(player.getName()+ " scored: " +Integer.toString(totalScore));
+            out.write(chatPacket.build().toByteArray());
+        }catch(IOException e) { // error cannot connect to server
+          e.printStackTrace();
+          System.out.println("Cannot find (or disconnected from) Server");
+        }
+    } 
+
 }

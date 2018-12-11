@@ -40,7 +40,10 @@ public class ChatReceiver extends Thread{
                         }else if(lobbyMsg1.getMessage().startsWith("Time's up!") || lobbyMsg1.getMessage().startsWith("THE GAME IS OVER")){
                         	chats.setText(chats.getText()+lobbyMsg1.getMessage()+"\n");
                         	layout.youCanGuess();
-                        }else if(lobbyMsg1.getMessage().startsWith(lobbyMsg1.getPlayer().getName()+" guessed")){
+                        	if(lobbyMsg1.getMessage().startsWith("THE GAME IS OVER")) layout.broadcastScore();
+                        }else if(lobbyMsg1.getMessage().startsWith(lobbyMsg1.getPlayer().getName()+" guessed") || lobbyMsg1.getMessage().startsWith(lobbyMsg1.getPlayer().getName()+" scored")){
+                        	chats.setText(chats.getText()+lobbyMsg1.getMessage()+"\n");
+                        }else if(lobbyMsg1.getMessage().startsWith("Starting")){
                         	chats.setText(chats.getText()+lobbyMsg1.getMessage()+"\n");
                         }else if(!lobbyMsg1.getMessage().equals(word) && !lobbyMsg1.getPlayer().getName().equals("server")){
                         	chats.setText(chats.getText()+lobbyMsg1.getPlayer().getName()+": "+lobbyMsg1.getMessage()+"\n");
