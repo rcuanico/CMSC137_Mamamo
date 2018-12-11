@@ -165,6 +165,7 @@ public class Layout{
 		leftPanel.add(chatPanel, BorderLayout.SOUTH);
 
 		chats=new JTextArea("");
+        chats.setWrapStyleWord(true);
 		chats.setPreferredSize(new Dimension(300,300));
 		chats.setEditable(false);
 		chats.setOpaque(false);
@@ -176,6 +177,7 @@ public class Layout{
 		chatPanel.add(msgArea,BorderLayout.SOUTH);
 
 		JTextArea msgHere = new JTextArea("");
+        msgHere.setWrapStyleWord(true);
 		chats.setOpaque(false);
 		msgHere.setPreferredSize(new Dimension(200,50));
 		msgArea.add(msgHere, BorderLayout.CENTER);

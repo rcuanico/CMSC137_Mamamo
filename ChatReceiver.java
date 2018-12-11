@@ -38,6 +38,8 @@ public class ChatReceiver extends Thread{
                         	timeRemaining.setText(lobbyMsg1.getMessage());
                         	String time = lobbyMsg1.getMessage().substring(lobbyMsg1.getMessage().lastIndexOf(" ")+1);
                         	layout.setTime(Integer.parseInt(time));
+                        }else if(lobbyMsg1.getMessage().startsWith("Time's up") || lobbyMsg1.getMessage().startsWith("THE GAME IS OVER")){
+                        	chats.setText(chats.getText()+lobbyMsg1.getMessage()+"\n");
                         }else if(!lobbyMsg1.getMessage().equals(word) && !lobbyMsg1.getPlayer().getName().equals("server")){
                         	chats.setText(chats.getText()+lobbyMsg1.getPlayer().getName()+": "+lobbyMsg1.getMessage()+"\n");
                         }

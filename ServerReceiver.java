@@ -51,13 +51,28 @@ public class ServerReceiver extends Thread{
 								.setMessage("The word to guess is: "+word);
 							out.write(chatPacket.build().toByteArray());
 						}
+						if(cd.getSecs()%10==0){
+							chatPacket = TcpPacket.ChatPacket.newBuilder();
+								chatPacket.setType(TcpPacket.PacketType.CHAT)
+								.setPlayer(player)
+								.setMessage("The word to guess is: "+word);
+							out.write(chatPacket.build().toByteArray());
+						}
 					}
 
 					chatPacket = TcpPacket.ChatPacket.newBuilder();
 						chatPacket.setType(TcpPacket.PacketType.CHAT)
 						.setPlayer(player)
-						.setMessage("Time's up! The correct word is: "+word+". Starting a new round...");
+						.setMessage("Time's up! The correct word is: "+word);
 					out.write(chatPacket.build().toByteArray());
+
+					if(i!=numRound-1){
+						chatPacket = TcpPacket.ChatPacket.newBuilder();
+							chatPacket.setType(TcpPacket.PacketType.CHAT)
+							.setPlayer(player)
+							.setMessage("Starting a new round...");
+						out.write(chatPacket.build().toByteArray());
+					}
 					i++;
 				}catch(IOException e) { // error cannot connect to server
 				  e.printStackTrace();
