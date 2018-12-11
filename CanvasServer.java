@@ -159,6 +159,7 @@ public class CanvasServer implements Runnable, Constants{
 						  int prevX = Integer.parseInt(playerInfo[4].trim());
 						  int prevY = Integer.parseInt(playerInfo[5].trim());
 						  int pressed = Integer.parseInt(playerInfo[6].trim());
+						  String color = playerInfo[7].trim();
 						  //Get the player from the game state
 						  NetPlayer player=(NetPlayer)game.getPlayers().get(pname);					  
 						  player.setX(x);
@@ -166,6 +167,7 @@ public class CanvasServer implements Runnable, Constants{
 						  player.setPrevX(prevX);
 						  player.setPrevY(prevY);
 						  player.setPressed(pressed);
+						  player.setColor(color);
 						  //Update the game state
 						  game.update(pname, player);
 						  //Send to all the updated game state

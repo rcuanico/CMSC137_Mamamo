@@ -28,6 +28,8 @@ public class NetPlayer {
 	 */
 	private int x,y,prevX,prevY,pressed;
 
+	private String color;
+
 	/**
 	 * Constructor
 	 * @param name
@@ -70,6 +72,10 @@ public class NetPlayer {
 	 */
 	public void setX(int x){
 		this.x=x;
+	}
+
+	public void setColor(String color){
+		this.color=color;
 	}
 	
 	public void setPrevX(int x){
@@ -118,7 +124,8 @@ public class NetPlayer {
 		retval+=x+" ";
 		retval+=y+" ";
 		retval+=prevX+" ";
-		retval+=prevY+" "+pressed;
+		retval+=prevY+" "+pressed+" ";
+		retval+=color;
 		// retval+=pressed;
 		return retval;
 	}	

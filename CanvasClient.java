@@ -77,6 +77,31 @@ public class CanvasClient extends JPanel implements Runnable{
 	BufferedImage offscreen;
 	 Image image;
 	 Graphics2D graphics;
+	 String curColor = "black";
+
+	 private static ImageIcon blackIcon = new ImageIcon("src/black.jpg");
+    private static Image img = blackIcon.getImage() ;  
+    private static Image newimg = img.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
+    
+    private static ImageIcon blueIcon = new ImageIcon("src/blue.png");
+    private static Image img2 = blueIcon.getImage() ;  
+    private static Image newimg2 = img2.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
+ 
+    private static ImageIcon yellowIcon = new ImageIcon("src/yellow.png");
+    private static Image img3 = yellowIcon.getImage() ;  
+    private static Image newimg3 = img3.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
+
+    private static ImageIcon greenIcon = new ImageIcon("src/green.png");
+    private static Image img4 = greenIcon.getImage() ;  
+    private static Image newimg4 = img4.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
+
+    private static ImageIcon redIcon = new ImageIcon("src/red.png");
+    private static Image img5 = redIcon.getImage() ;  
+    private static Image newimg5 = img5.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
+
+    private static ImageIcon clearIcon = new ImageIcon("src/clear.png");
+    private static Image img6 = clearIcon.getImage() ;  
+    private static Image newimg6 = img6.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ; 
 	
 
 	 	public static final String APP_NAME="Circle Wars 0.01";
@@ -110,22 +135,125 @@ public class CanvasClient extends JPanel implements Runnable{
 		socket.setSoTimeout(100);
 		
 		//Some gui stuff i hate.
+
 		frame.getContentPane().add(this);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(640, 480);
 		frame.setVisible(true);
 		
+		JPanel pallettePanel = new JPanel();
+		pallettePanel.setSize(100,480);
+		frame.getContentPane().add(pallettePanel);
 		//create the buffer
 		offscreen=(BufferedImage)this.createImage(640, 480);
 		graphics = offscreen.createGraphics();
 		
 		// twoD.setPaint(Color.decode("#c0392b"));
-		
+		clearIcon = new ImageIcon( newimg6 );
+		JButton clearBtn = new JButton(clearIcon);
+        clearBtn.setBorder(BorderFactory.createEmptyBorder());
+        clearBtn.setContentAreaFilled(false);
+		clearBtn.setPreferredSize(new Dimension(120,120));
+        
+        blackIcon = new ImageIcon( newimg );
+		JButton blackBtn = new JButton(blackIcon);
+        blackBtn.setBorder(BorderFactory.createEmptyBorder());
+        blackBtn.setContentAreaFilled(false);
+		blackBtn.setPreferredSize(new Dimension(120,120));
+
+        redIcon = new ImageIcon( newimg5 );
+		JButton redBtn = new JButton(redIcon);
+        redBtn.setBorder(BorderFactory.createEmptyBorder());
+        redBtn.setContentAreaFilled(false);
+		redBtn.setPreferredSize(new Dimension(120,120));
+
+        blueIcon = new ImageIcon( newimg2 );
+		JButton blueBtn = new JButton(blueIcon);
+        blueBtn.setBorder(BorderFactory.createEmptyBorder());
+        blueBtn.setContentAreaFilled(false);
+		blueBtn.setPreferredSize(new Dimension(120,120));
+            
+        yellowIcon = new ImageIcon( newimg3 );
+		JButton yellowBtn = new JButton(yellowIcon);
+        yellowBtn.setBorder(BorderFactory.createEmptyBorder());
+        yellowBtn.setContentAreaFilled(false);
+		yellowBtn.setPreferredSize(new Dimension(120,120));
+        
+        greenIcon = new ImageIcon( newimg4 );
+		JButton greenBtn = new JButton(greenIcon);
+        greenBtn.setBorder(BorderFactory.createEmptyBorder());
+        greenBtn.setContentAreaFilled(false);
+		greenBtn.setPreferredSize(new Dimension(120,120));
+
+		clearBtn.setBounds(0,10,0,0);
+		clearBtn.setSize(new Dimension(70,50));
+		clearBtn.setBackground(Color.decode("#7f8c8d"));
+		blackBtn.setBounds(0,80,0,0);
+		blackBtn.setSize(new Dimension(70,50));
+		blackBtn.setBackground(Color.black);
+		redBtn.setBounds(0,140,0,0);
+		redBtn.setSize(new Dimension(70,50));
+		redBtn.setBackground(Color.red);
+		blueBtn.setBounds(0,210,0,0);
+		blueBtn.setSize(new Dimension(70,50));
+		blueBtn.setBackground(Color.blue);
+		yellowBtn.setBounds(0,280,0,0);
+		yellowBtn.setSize(new Dimension(70,50));
+		yellowBtn.setBackground(Color.yellow);
+		greenBtn.setBounds(0,350,0,0);
+		greenBtn.setSize(new Dimension(70,50));
+		greenBtn.setBackground(Color.green);
+		pallettePanel.add(clearBtn);
+		pallettePanel.add(blackBtn);
+		pallettePanel.add(redBtn);
+		pallettePanel.add(blueBtn);
+		pallettePanel.add(yellowBtn);
+		pallettePanel.add(greenBtn);
+
+		clearBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	clearCanvas();
+
+            }
+        });
+        blackBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	changetoBlack();
+            }
+        });
+        redBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	changetoRed();
+            }
+        });
+        blueBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	changetoBlue();
+            }
+        });
+        yellowBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	changetoYellow();
+            }
+        });
+        greenBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	changetoGreen();
+            }
+        });
+
 		//Some gui stuff again...
 		frame.addKeyListener(new KeyHandler());	
 		frame.addMouseMotionListener(new MouseMotionHandler());	
 		frame.addMouseListener(new MouseAdapterHandler());
-		changetoBlue();
+		frame.setResizable(false);
+		//changetoBlue();
 		//tiime to play
 		t.start();		
 	}
@@ -184,11 +312,26 @@ public class CanvasClient extends JPanel implements Runnable{
 						int prevX = Integer.parseInt(playerInfo[4]);
 						int prevY = Integer.parseInt(playerInfo[5]);
 						int pressed = Integer.parseInt(playerInfo[6]);
+						String col = playerInfo[7];
 						int x = Integer.parseInt(playerInfo[2]);
 						int y = Integer.parseInt(playerInfo[3]);
 						//draw on the offscreen image
 						if(pressed == 1){
-
+							if(col.equals("green")){
+								changetoGreen();
+							}else if(col.equals("blue")){
+								changetoBlue();
+							}else if(col.equals("red")){
+								changetoRed();
+							}else if(col.equals("yellow")){
+								changetoYellow();
+							}else if(col.equals("black")){
+								changetoBlack();
+							}else if(col.equals("clear")){
+								graphics.setPaint(Color.white);
+							    graphics.fillRect(0,0,getSize().width,getSize().height);
+							    graphics.setPaint(Color.black);
+							}
 							graphics.drawLine(prevX,prevY,x,y);
 							
 						}
@@ -221,23 +364,29 @@ public class CanvasClient extends JPanel implements Runnable{
 	    graphics.setPaint(Color.white);
 	    graphics.fillRect(0,0,getSize().width,getSize().height);
 	    graphics.setPaint(Color.black);
+	    curColor="clear";
 	    repaint();
 	}
 
 	public void changetoRed(){
 	    graphics.setPaint(Color.decode("#c0392b"));
+	    curColor="red";
 	}
 	public void changetoBlue(){
 	    graphics.setPaint(Color.decode("#2980b9"));
+	    curColor="blue";
 	}
 	public void changetoYellow(){
 	    graphics.setPaint(Color.yellow);
+	    curColor="yellow";
 	}
 	public void changetoGreen(){
 	    graphics.setPaint(Color.decode("#27ae60"));
+	    curColor="green";
 	}
 	public void changetoBlack(){
 	    graphics.setPaint(Color.black);
+	    curColor="black";
 	}
 	
 	
@@ -272,7 +421,7 @@ public class CanvasClient extends JPanel implements Runnable{
 
 		if(graphics != null){
                 graphics.drawLine(prevX,prevY,x,y);
-                send("PLAYER "+name+" "+x+" "+y+" "+prevX+" "+prevY+" "+1);
+                send("PLAYER "+name+" "+x+" "+y+" "+prevX+" "+prevY+" "+1+" "+curColor);
                 frame.repaint();
                 prevX = x;
                 prevY = y;
@@ -293,7 +442,7 @@ public class CanvasClient extends JPanel implements Runnable{
 			case KeyEvent.VK_RIGHT:x+=xspeed;break;
 			}
 			if (prevX != x || prevY != y){
-				send("PLAYER "+name+" "+x+" "+y+" "+prevX+" "+prevY+" "+1);
+				send("PLAYER "+name+" "+x+" "+y+" "+prevX+" "+prevY+" "+1+" "+curColor);
 			}	
 		}
 	}
