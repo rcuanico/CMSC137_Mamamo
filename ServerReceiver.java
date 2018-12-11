@@ -60,12 +60,6 @@ public class ServerReceiver extends Thread{
 						}
 					}
 
-					chatPacket = TcpPacket.ChatPacket.newBuilder();
-						chatPacket.setType(TcpPacket.PacketType.CHAT)
-						.setPlayer(player)
-						.setMessage("Time's up! The correct word is: "+word);
-					out.write(chatPacket.build().toByteArray());
-
 					if(i!=numRound-1){
 						chatPacket = TcpPacket.ChatPacket.newBuilder();
 							chatPacket.setType(TcpPacket.PacketType.CHAT)
