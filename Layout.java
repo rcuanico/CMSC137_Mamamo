@@ -102,7 +102,7 @@ public class Layout{
     	Container pane = frame.getContentPane();
 
     	JPanel mainPanel = new JPanel(new BorderLayout());
-    	mainPanel.setPreferredSize(new Dimension(1200,600));
+    	mainPanel.setPreferredSize(new Dimension(1200,450));
         mainPanel.setBackground(Color.orange);
     	pane.add(mainPanel);
 
@@ -143,7 +143,7 @@ public class Layout{
         score.setBackground(Color.decode("#2ecc71"));
     	scoreAndTime.add(score, BorderLayout.NORTH);
 
-    	wordArea = new JTextArea("Word:");
+    	wordArea = new JTextArea("");
     	wordArea.setPreferredSize(new Dimension(200,25));
     	wordArea.setEditable(false);
     	wordArea.setOpaque(true);
@@ -340,10 +340,6 @@ public class Layout{
         });
 
     	//======ALL PLAYER SCORES AND EXIT==========//
-    	JPanel bottomPanel = new JPanel(new BorderLayout());
-    	bottomPanel.setPreferredSize(new Dimension(1000,150));
-        bottomPanel.setBackground(Color.decode("#ecf0f1"));
-    	mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
     	//=============ALL PLAYERS============//
     	// System.out.println(getAllPlayers().length());
@@ -356,7 +352,7 @@ public class Layout{
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//frame.setPreferredSize(new Dimension(1200, 800));
-        frame.setPreferredSize(new Dimension(1200, 600));
+        frame.setPreferredSize(new Dimension(1200, 480));
         frame.setBackground(Color.white);
 
         //Set up the content pane.

@@ -32,7 +32,7 @@ public class joinGameDialog extends JDialog {
 		JPanel getInfo = new JPanel(new GridLayout(5,1));
 		getInfo.setPreferredSize(new Dimension(350,200));
 		getInfo.setBorder(new EmptyBorder(10, 10, 10, 10));
-		getInfo.setBackground(new Color(85,107,47));
+		getInfo.setBackground(Color.decode("#3498db"));
 		getContentPane().add(getInfo);
 
 		nameMsg = new JTextArea("Enter your name: ");
@@ -62,7 +62,7 @@ public class joinGameDialog extends JDialog {
 		getInfo.add(lobby);
 
 		JButton joinLobby = new JButton("Join Game");
-		joinLobby.setBackground(new Color(200,143,76));
+		joinLobby.setBackground(Color.decode("#f1c40f"));
 		joinLobby.setForeground(Color.BLACK);
 		getInfo.add(joinLobby);
 

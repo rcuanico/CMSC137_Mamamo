@@ -40,7 +40,7 @@ public class newGameDialog extends JDialog {
 		JPanel getInfo = new JPanel(new GridLayout(7,1));
 		getInfo.setPreferredSize(new Dimension(350,200));
 		getInfo.setBorder(new EmptyBorder(10, 10, 10, 10));
-		getInfo.setBackground(new Color(85,107,47));
+		getInfo.setBackground(Color.decode("#3498db"));
 
 		nameMsg = new JTextArea("Enter your name: ");
 		nameMsg.setFont(MYFONT);
@@ -82,7 +82,7 @@ public class newGameDialog extends JDialog {
 		getInfo.add(numRound);
 
 		JButton newLobby = new JButton("Create Lobby");
-		newLobby.setBackground(new Color(200,143,76));
+		newLobby.setBackground(Color.decode("#f1c40f"));
 		newLobby.setForeground(Color.BLACK);
 		getInfo.add(newLobby);
 		cardPanel.add(getInfo, "getInfo");
@@ -90,7 +90,7 @@ public class newGameDialog extends JDialog {
 		JPanel showID = new JPanel(new GridLayout(2,1));
 		showID.setPreferredSize(new Dimension(350,200));
 		showID.setBorder(new EmptyBorder(10, 10, 10, 10));
-		showID.setBackground(new Color(85,107,47));
+		showID.setBackground(Color.decode("#3498db"));
 
 		lobbyMsg = new JTextArea("");
 		lobbyMsg.setFont(MYFONT);
@@ -100,7 +100,7 @@ public class newGameDialog extends JDialog {
 		showID.add(lobbyMsg);
 
 		JButton startGame = new JButton("Start Game");
-		startGame.setBackground(new Color(200,143,76));
+		startGame.setBackground(Color.decode("#f1c40f"));
 		startGame.setForeground(Color.BLACK);
 		showID.add(startGame);
 
