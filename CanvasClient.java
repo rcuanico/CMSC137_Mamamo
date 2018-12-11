@@ -78,6 +78,7 @@ public class CanvasClient extends JPanel implements Runnable{
 	 Image image;
 	 Graphics2D graphics;
 	 String curColor = "black";
+	 String origCol;
 
 	 private static ImageIcon blackIcon = new ImageIcon("src/black.jpg");
     private static Image img = blackIcon.getImage() ;  
@@ -147,6 +148,9 @@ public class CanvasClient extends JPanel implements Runnable{
 		//create the buffer
 		offscreen=(BufferedImage)this.createImage(640, 480);
 		graphics = offscreen.createGraphics();
+		graphics.setPaint(Color.white);
+	    graphics.fillRect(0,0,getSize().width,getSize().height);
+	    graphics.setPaint(Color.black);
 		
 		// twoD.setPaint(Color.decode("#c0392b"));
 		clearIcon = new ImageIcon( newimg6 );
@@ -316,6 +320,7 @@ public class CanvasClient extends JPanel implements Runnable{
 						int x = Integer.parseInt(playerInfo[2]);
 						int y = Integer.parseInt(playerInfo[3]);
 						//draw on the offscreen image
+						origCol=curColor;
 						if(pressed == 1){
 							if(col.equals("green")){
 								changetoGreen();
@@ -328,13 +333,10 @@ public class CanvasClient extends JPanel implements Runnable{
 							}else if(col.equals("black")){
 								changetoBlack();
 							}else if(col.equals("clear")){
-								graphics.setPaint(Color.white);
-							    graphics.fillRect(0,0,getSize().width,getSize().height);
-							    graphics.setPaint(Color.black);
+								clearCanvas();
 							}
-							graphics.drawLine(prevX,prevY,x,y);
-							
 						}
+						curColor=origCol;
 						// offscreen.getGraphics().drawString(pname,x-10,y+30);					
 					}
 					//show the changes
@@ -365,7 +367,7 @@ public class CanvasClient extends JPanel implements Runnable{
 	    graphics.fillRect(0,0,getSize().width,getSize().height);
 	    graphics.setPaint(Color.black);
 	    curColor="clear";
-	    repaint();
+	    //repaint();
 	}
 
 	public void changetoRed(){
